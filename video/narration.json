@@ -2,36 +2,46 @@
   "voice": {
     "id": "cgSgspJ2msm6clMCkdW9",
     "name": "Jessica",
-    "model": "eleven_multilingual_v2"
+    "models": [
+      "eleven_v4",
+      "eleven_v3",
+      "eleven_multilingual_v2"
+    ],
+    "settings": {
+      "stability": 0.5,
+      "similarity_boost": 0.8,
+      "style": 0.45,
+      "use_speaker_boost": true
+    }
   },
   "scenes": [
     {
       "id": "title",
-      "text": "Hi, I'm Capy. Welcome to CapyWorks, the chillest software factory."
+      "text": "Hey, I'm Capy! Welcome to CapyWorks... the chillest software factory around."
     },
     {
       "id": "problem",
-      "text": "Coding agents are fast. But fast agents ship AI slop: TODOs, dead code, tests that assert nothing, and changes nobody asked for."
+      "text": "Coding agents are fast. Like, really fast. But they're messy. TODOs everywhere, dead code, tests that don't actually test anything."
     },
     {
       "id": "how",
-      "text": "So we split the thinking, fast and slow. A coding agent does the slow work, riding on my back. I'm the fast part. I run on Jev, a System One decision model from TypeSafe. I ask typed questions, and get probabilities back in a blink."
+      "text": "So we split the job in two. The agent does the slow, heavy thinking, riding on my back. I'm the quick gut check. I run on Jev, a System One model from TypeSafe. I ask it simple questions, and it tells me how sure it is, in a blink."
     },
     {
       "id": "floor",
-      "text": "Every ticket moves down the line. Intake, triage, build, tests, and then my gate. Every decision is logged, with its probability, its latency, and its cost."
+      "text": "Every ticket rides down the line. Intake, triage, build, tests... and then it has to get past me. I write down every call I make."
     },
     {
       "id": "catch",
-      "text": "When an agent cuts corners, I notice, even when its tests pass. The change bounces back with the exact checks it failed. The agent tries again, and this time it's clean. That's when I get my yuzu."
+      "text": "Okay, watch this one. The tests passed! But it's full of TODOs and stray logs. So... nope. I caught it in a hundred and fourteen milliseconds, and back it goes, with a list of exactly what's wrong. Second try? Clean. And I get my yuzu."
     },
     {
       "id": "stats",
-      "text": "Here's a real run from today. Every call I made, how fast I made it, and what it cost."
+      "text": "This is a real run from today. Thirty decisions in eleven calls, about a hundred and forty milliseconds each. And the whole thing cost less than a tenth of a cent."
     },
     {
       "id": "close",
-      "text": "Agents do the work. Capy makes the calls. This is CapyWorks."
+      "text": "So yeah. Agents do the work. I make the calls. This is CapyWorks."
     }
   ]
 }
