@@ -1,0 +1,22 @@
+{
+  "name": "capyworks",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The chillest software factory: LLM agents write the code, a System One decision model (Jev) makes every call.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "shift": "tsx src/cli.ts",
+    "test": "node --import tsx --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

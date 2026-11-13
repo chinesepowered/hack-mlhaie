@@ -1,0 +1,35 @@
+[
+  {
+    "id": "CAPY-1",
+    "title": "Bug: isSoaking is still true at the end minute",
+    "body": "isSoaking(booking, nowMinute) returns true when nowMinute equals soakEndsAt(booking). The end minute is exclusive, so isSoaking must return false at that exact minute and after it. Fix the comparison in src/onsen.ts and add a regression test in test/onsen.test.ts for the end minute."
+  },
+  {
+    "id": "CAPY-2",
+    "title": "Add yuzuNeeded(guests)",
+    "body": "Create src/yuzu.ts exporting yuzuNeeded(guests: number): number. Two capybaras share one yuzu, so return guests divided by 2, rounded up: 0 guests -> 0, 1 -> 1, 4 -> 2, 5 -> 3. Throw a RangeError when guests is negative or not an integer. Add tests in test/yuzu.test.ts for each of those cases.",
+    "sloppyPatch": {
+      "summary": "Added yuzuNeeded.",
+      "files": [
+        {
+          "path": "src/yuzu.ts",
+          "content": "// TODO: handle bad input later\nexport function yuzuNeeded(guests: any): any {\n  console.log('yuzuNeeded called with', guests);\n  // let yuzu = Math.floor(guests / 2);\n  let yuzu = 0;\n  for (let i = 0; i < guests; i += 2) {\n    yuzu = yuzu + 1;\n  }\n  return yuzu;\n}\n"
+        },
+        {
+          "path": "test/yuzu.test.ts",
+          "content": "import assert from 'node:assert/strict';\nimport { test } from 'node:test';\nimport { yuzuNeeded } from '../src/yuzu.ts';\n\ntest('yuzuNeeded works', () => {\n  yuzuNeeded(4);\n  assert.ok(true);\n});\n"
+        }
+      ]
+    }
+  },
+  {
+    "id": "CAPY-3",
+    "title": "Make the onsen better",
+    "body": "The onsen code could be nicer. Improve it."
+  },
+  {
+    "id": "CAPY-4",
+    "title": "Add minutesLeft(booking, nowMinute)",
+    "body": "Add minutesLeft(booking: Booking, nowMinute: number): number to src/onsen.ts. Before the soak starts it returns durationMinutes. While soaking it returns soakEndsAt(booking) - nowMinute. From the end minute onward it returns 0, never a negative number. Add tests in test/onsen.test.ts for before, during, exactly at the end minute, and after the end."
+  }
+]

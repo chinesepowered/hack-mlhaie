@@ -1,0 +1,13 @@
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+node_modules/
+.workspaces/
+video/node_modules/
+*.log
+
+# shift recordings: keep only the demo shift used for replay and the video
+runs/*
+!runs/demo.json
