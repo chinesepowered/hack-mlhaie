@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # One-command re-render of the CapyWorks demo video.
-# Usage (from anywhere): bash video/scripts/render.sh
+# Usage (from anywhere): bash video/scripts/render.sh [--mix-only]
+#   --mix-only  re-mix the music over the last voice-only render, without re-rendering the picture
 #
 # 1. build.mjs fills the composition with run data and narration timings
 # 2. HyperFrames renders the picture and the narration
-# 3. ffmpeg lays audio/music.mp3 underneath: about 18 dB below the voice, ducked further
+# 3. ffmpeg lays audio/music.mp3 underneath: about 19 dB below the speech, ducked further
 #    while Capy talks (sidechain keyed by the narration), 1.5 s fade-in, 3 s fade-out
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -15,14 +16,17 @@ if [[ -x "$headless_shell" ]]; then
   export HYPERFRAMES_BROWSER_PATH="$headless_shell" PRODUCER_LOW_MEMORY_MODE=false
 fi
 
-MUSIC_UNDER_VOICE_DB=18
-voice_cut=out/capyworks-voice.mp4
+MUSIC_UNDER_VOICE_DB=15  # vs the voice track's mean, which includes pauses: lands ~19 dB under speech
+voice_cut=.hyperframes/capyworks-voice.mp4  # kept (gitignored) so --mix-only can re-mix
 final=out/capyworks-demo.mp4
 
-[[ -d node_modules ]] || npm install --no-audit --no-fund
-node build.mjs
-npx hyperframes lint
-npx hyperframes render --output "$voice_cut" --quiet
+if [[ "${1:-}" != "--mix-only" ]]; then
+  [[ -d node_modules ]] || npm install --no-audit --no-fund
+  node build.mjs
+  npx hyperframes lint
+  mkdir -p .hyperframes
+  npx hyperframes render --output "$voice_cut" --quiet
+fi
 
 mean_db() {
   ffmpeg -hide_banner -nostats -i "$1" -map 0:a:0 -af volumedetect -f null - 2>&1 |
@@ -41,10 +45,9 @@ if [[ -f audio/music.mp3 ]]; then
 [music][key]sidechaincompress=threshold=0.03:ratio=3:attack=25:release=500[ducked];\
 [voice][ducked]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[mix]" \
     -map 0:v -map "[mix]" -c:v copy -c:a aac -b:a 192k -movflags +faststart "$final"
-  rm -f "$voice_cut"
   echo "music: ${gain_db} dB gain (voice mean ${voice_db} dB, music mean ${music_db} dB), ducked under the narration"
 else
-  mv "$voice_cut" "$final"
+  cp "$voice_cut" "$final"
 fi
 
 ffprobe -v error -show_entries format=duration,size -of compact "$final"
