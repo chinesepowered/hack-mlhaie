@@ -5,7 +5,7 @@
 #
 # 1. build.mjs fills the composition with run data and narration timings
 # 2. HyperFrames renders the picture and the narration
-# 3. ffmpeg lays audio/music.mp3 underneath: about 19 dB below the speech, ducked further
+# 3. ffmpeg lays audio/music.mp3 underneath: about 14 dB below the speech, ducked further
 #    while Capy talks (sidechain keyed by the narration), 1.5 s fade-in, 3 s fade-out
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -16,7 +16,7 @@ if [[ -x "$headless_shell" ]]; then
   export HYPERFRAMES_BROWSER_PATH="$headless_shell" PRODUCER_LOW_MEMORY_MODE=false
 fi
 
-MUSIC_UNDER_VOICE_DB=15  # vs the voice track's mean, which includes pauses: lands ~19 dB under speech
+MUSIC_UNDER_VOICE_DB=${MUSIC_UNDER_VOICE_DB:-10}  # vs the voice track's mean, which includes pauses: lands ~14 dB under speech
 voice_cut=.hyperframes/capyworks-voice.mp4  # kept (gitignored) so --mix-only can re-mix
 final=out/capyworks-demo.mp4
 
@@ -42,7 +42,7 @@ if [[ -f audio/music.mp3 ]]; then
   ffmpeg -y -loglevel error -i "$voice_cut" -i audio/music.mp3 -filter_complex "\
 [1:a]atrim=0:${duration},asetpts=PTS-STARTPTS,volume=${gain_db}dB,afade=t=in:st=0:d=1.5,afade=t=out:st=${fade_out_at}:d=3[music];\
 [0:a]asplit=2[voice][key];\
-[music][key]sidechaincompress=threshold=0.03:ratio=3:attack=25:release=500[ducked];\
+[music][key]sidechaincompress=threshold=0.03:ratio=6:attack=25:release=500[ducked];\
 [voice][ducked]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.95[mix]" \
     -map 0:v -map "[mix]" -c:v copy -c:a aac -b:a 192k -movflags +faststart "$final"
   echo "music: ${gain_db} dB gain (voice mean ${voice_db} dB, music mean ${music_db} dB), ducked under the narration"
