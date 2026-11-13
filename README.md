@@ -6,7 +6,7 @@
 
 AI coding agents are fast, but they ship slop: TODOs, leftover debug logs, `any` types and tests that assert nothing, and none of it fails a test suite. CapyWorks is a software factory built on *Thinking, Fast and Slow*: an LLM coding agent (System 2) writes the code, while Capy, our capybara foreman powered by TypeSafe's **Jev** decision model (System 1), makes every judgment call: whether a ticket is buildable, how risky it is, and whether a diff is slop. Each judgment is a typed question answered with a probability in about 150 ms for a fraction of a cent, so Capy checks every attempt instead of a sample and feeds each failed check back to the agent until the code is clean. In our recorded shift, a sloppy patch passed all of its tests, Capy failed it on 5 of 5 checks in 114 ms, and the retry merged clean.
 
-**[Watch the 80-second demo video](video/out/capyworks-demo.mp4)** · [Decision ledger from a real shift](runs/demo.md) · [Run it yourself](#run-it)
+**[Watch the 80-second demo video on YouTube](https://www.youtube.com/watch?v=ODjb7z0JUyM)** ([MP4 in the repo](video/out/capyworks-demo.mp4)) · [Decision ledger from a real shift](runs/demo.md) · [Run it yourself](#run-it)
 
 ![Capy rejecting a sloppy patch that passed its tests](docs/dashboard.png)
 
@@ -108,7 +108,7 @@ The CAPY-2 sloppy patch, as Capy saw it:
 
 ## HeyGen HyperFrames: the demo video
 
-Our **[80-second demo video](video/out/capyworks-demo.mp4)** (1920×1080) is an HTML composition rendered to MP4 with HyperFrames.
+Our **[80-second demo video](https://www.youtube.com/watch?v=ODjb7z0JUyM)** (1920×1080, [MP4 here](video/out/capyworks-demo.mp4)) is an HTML composition rendered to MP4 with HyperFrames.
 
 - **Seven scenes** (title, the problem, fast and slow, the factory floor, the slop catch, the numbers, the close) on one GSAP timeline that HyperFrames seeks frame by frame.
 - **Data-driven.** [`video/build.mjs`](video/build.mjs) fills the template from the shift log in [`runs/demo.json`](runs/demo.json). Every number on screen is real, and the gate scene shows the actual P(fail) for each check.
