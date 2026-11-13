@@ -12,3 +12,8 @@ video/node_modules/
 runs/*
 !runs/demo.json
 !runs/demo.md
+
+# HyperFrames scratch output
+video/test/
+video/out/test.mp4
+.hyperframes/

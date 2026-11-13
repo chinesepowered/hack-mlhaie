@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CapyWorks — the chillest software factory</title>
+  <meta name="description" content="A software factory where System 2 agents write code and System 1 Capy (a Jev decision model) makes every call.">
+  <link rel="icon" href="/assets/capy.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand__capy" id="brand-capy" aria-hidden="true">
+        <img src="/assets/capy.svg" alt="" width="76" height="76" id="brand-capy-img">
+      </div>
+      <div class="brand__text">
+        <h1>CapyWorks</h1>
+        <p class="brand__tagline">the chillest software factory</p>
+        <p class="brand__sub">System 2 agents write. System 1 Capy decides.</p>
+      </div>
+    </div>
+
+    <dl class="stats" aria-label="Shift stats">
+      <div class="stat">
+        <dt>Jev decisions</dt>
+        <dd id="stat-decisions">0</dd>
+      </div>
+      <div class="stat">
+        <dt>Avg Jev latency</dt>
+        <dd><span id="stat-latency">–</span><small>ms</small></dd>
+      </div>
+      <div class="stat">
+        <dt>Jev cost</dt>
+        <dd id="stat-cost">$0</dd>
+      </div>
+      <div class="stat">
+        <dt>Merged / bounced</dt>
+        <dd><span id="stat-merged" class="tone-pass">0</span><span class="stat__sep">/</span><span id="stat-bounced" class="tone-fail">0</span></dd>
+      </div>
+      <div class="stat stat--yuzu">
+        <dt>Slop caught</dt>
+        <dd id="stat-slop">0</dd>
+      </div>
+    </dl>
+
+    <div class="controls">
+      <div class="controls__top">
+        <div class="status" id="status" data-state="idle">
+          <span class="status__dot" aria-hidden="true"></span>
+          <span id="status-text">Idle</span>
+          <span class="status__clock" id="status-clock"></span>
+        </div>
+        <div class="models" id="models"></div>
+      </div>
+      <div class="controls__row">
+        <label class="switch" title="Swap in an agent that writes deliberately sloppy code, so you can watch Capy catch it">
+          <input type="checkbox" id="sloppy-toggle">
+          <span class="switch__track" aria-hidden="true"></span>
+          <span>Sloppy agent</span>
+        </label>
+        <button type="button" id="btn-live" class="btn btn--primary">Start live shift</button>
+        <button type="button" id="btn-replay" class="btn">Replay recorded shift</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel floor" aria-label="Factory floor">
+      <div class="stations">
+        <div class="station" data-stage="intake">
+          <header class="station__head">
+            <span class="station__icon" data-icon="intake"></span>
+            <div><h2>Intake</h2><p>Specific enough to build?</p></div>
+          </header>
+          <div class="station__slot" data-slot="intake"></div>
+        </div>
+        <div class="station" data-stage="triage">
+          <header class="station__head">
+            <span class="station__icon" data-icon="triage"></span>
+            <div><h2>Triage</h2><p>What kind, how risky?</p></div>
+          </header>
+          <div class="station__slot" data-slot="triage"></div>
+        </div>
+        <div class="station station--build" data-stage="build">
+          <header class="station__head">
+            <span class="station__icon station__icon--wide" data-icon="build"></span>
+            <div><h2>Build</h2><p>Agents ride on Capy</p></div>
+          </header>
+          <div class="station__slot" data-slot="build"></div>
+        </div>
+        <div class="station" data-stage="tests">
+          <header class="station__head">
+            <span class="station__icon" data-icon="tests"></span>
+            <div><h2>Tests</h2><p>Hard gate: must pass</p></div>
+          </header>
+          <div class="station__slot" data-slot="tests"></div>
+        </div>
+        <div class="station station--gate" data-stage="gate">
+          <header class="station__head">
+            <span class="station__icon" data-icon="gate"></span>
+            <div><h2>Capy Gate</h2><p>Is this slop?</p></div>
+          </header>
+          <div class="gate-stage" id="gate-stage">
+            <div class="bubble" id="capy-bubble">Ready when you are.</div>
+            <div class="gate-capy" id="gate-capy" aria-hidden="true"></div>
+            <span class="yuzu-drop" id="yuzu-drop" aria-hidden="true"></span>
+          </div>
+          <div class="station__slot" data-slot="gate"></div>
+        </div>
+        <div class="station station--onsen" data-stage="onsen">
+          <header class="station__head">
+            <span class="station__icon" data-icon="onsen"></span>
+            <div><h2>Onsen</h2><p>Merged. Soaking.</p></div>
+          </header>
+          <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="station__slot" data-slot="onsen"></div>
+        </div>
+      </div>
+
+      <div class="belt" aria-hidden="true"></div>
+
+      <div class="upstream">
+        <h3><span class="upstream__arrow" aria-hidden="true"></span>Back upstream</h3>
+        <div class="upstream__slot" data-slot="upstream">
+          <p class="empty">Nothing bounced yet.</p>
+        </div>
+      </div>
+
+      <p class="ticker" id="ticker" aria-live="polite"></p>
+    </section>
+
+    <aside class="panel feed" aria-label="Capy's decisions">
+      <header class="feed__head">
+        <h2>Capy's calls</h2>
+        <p>Every Jev decision, newest first</p>
+      </header>
+      <div class="feed__list" id="feed">
+        <p class="empty">No decisions yet. Start a shift or replay one.</p>
+      </div>
+    </aside>
+
+    <section class="panel detail" id="detail" aria-label="Ticket detail">
+      <p class="empty">Pick a ticket on the floor to see its diff, tests and Capy's verdict.</p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

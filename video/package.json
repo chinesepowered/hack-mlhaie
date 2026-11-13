@@ -1,0 +1,16 @@
+{
+  "name": "capyworks-video",
+  "private": true,
+  "type": "module",
+  "description": "CapyWorks demo video, rendered with HeyGen HyperFrames",
+  "scripts": {
+    "build": "node build.mjs",
+    "render": "node build.mjs && hyperframes render --output out/capyworks-demo.mp4"
+  },
+  "devDependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/nunito": "^5.3.0",
+    "gsap": "^3.15.1",
+    "hyperframes": "^0.9.42"
+  }
+}

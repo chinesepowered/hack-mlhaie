@@ -1,0 +1,22 @@
+{
+  "runId": "mock-run",
+  "models": { "system1": "jev-1.14.0", "system2": "Qwen/Qwen3.8-27B" },
+  "tickets": [
+    { "id": "T1", "title": "Add soakMinutesLeft() to the onsen booking helpers", "outcome": "merged", "attempts": 2 },
+    { "id": "T2", "title": "Reject negative yuzu delivery counts", "outcome": "merged", "attempts": 1 },
+    { "id": "T3", "title": "make it better", "outcome": "bounced", "attempts": 0 }
+  ],
+  "totals": {
+    "jevRequests": 14, "decisions": 61, "jevMsAvg": 240, "jevInputTokens": 18400, "jevCostUsd": 0.00077,
+    "llmMsTotal": 48200, "merged": 2, "bounced": 1, "escalated": 0, "slopCaught": 5
+  },
+  "highlight": {
+    "ticketId": "T1",
+    "title": "Add soakMinutesLeft() to the onsen booking helpers",
+    "failed": [
+      { "label": "Leaves a TODO or placeholder", "display": "p = 0.97" },
+      { "label": "Tests don't check the new behavior", "display": "p = 0.92" },
+      { "label": "Edits files outside the ticket", "display": "p = 0.88" }
+    ]
+  }
+}

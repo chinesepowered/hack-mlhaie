@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" class="capy" role="img" aria-label="Capy, the CapyWorks capybara">
+  <style>
+    .capy .capy-eyes-side,
+    .capy .capy-eyes-happy,
+    .capy .capy-yuzu { display: none; }
+    .capy.capy--reject .capy-eyes-open { display: none; }
+    .capy.capy--reject .capy-eyes-side { display: inline; }
+    .capy.capy--merge .capy-eyes-open { display: none; }
+    .capy.capy--merge .capy-eyes-happy,
+    .capy.capy--merge .capy-yuzu { display: inline; }
+    .capy.capy--merge .capy-yuzu { animation: capy-yuzu-drop 0.6s cubic-bezier(.3,1.4,.5,1) both; }
+    @keyframes capy-yuzu-drop {
+      from { transform: translateY(-48px); opacity: 0; }
+      55%  { opacity: 1; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+
+  <ellipse cx="124" cy="184" rx="92" ry="7" fill="#3B2A20" opacity="0.12"/>
+
+  <g id="capy-body" class="capy-body">
+    <!-- far-side legs -->
+    <rect x="62" y="146" width="22" height="34" rx="10" fill="#7A4D31"/>
+    <rect x="158" y="146" width="22" height="34" rx="10" fill="#7A4D31"/>
+    <!-- ear (tucked behind the head) -->
+    <ellipse cx="147" cy="52" rx="12" ry="10" fill="#8A5A3B"/>
+    <ellipse cx="147" cy="53" rx="6.5" ry="5.5" fill="#6B4430"/>
+    <!-- loaf body -->
+    <path d="M28 128 C26 92 50 66 92 64 L142 66 C170 68 188 86 188 112 L188 142 C188 162 174 174 154 174 L60 174 C40 174 28 158 28 128 Z" fill="#B07B53"/>
+    <!-- near-side legs -->
+    <rect x="44" y="150" width="24" height="32" rx="11" fill="#8A5A3B"/>
+    <rect x="138" y="150" width="24" height="32" rx="11" fill="#8A5A3B"/>
+    <!-- fur flicks -->
+    <path d="M52 100 q7 -7 14 0 M64 118 q7 -7 14 0 M44 122 q6 -6 12 0" fill="none" stroke="#9C6A45" stroke-width="3" stroke-linecap="round"/>
+    <!-- boxy head -->
+    <path d="M132 72 C132 55 146 44 165 44 L198 46 C216 47 228 61 228 81 L228 112 C228 129 216 140 199 140 L162 140 C145 140 132 127 132 110 Z" fill="#B07B53"/>
+    <!-- head shade where it meets the body -->
+    <path d="M132 96 C132 112 140 126 152 134" fill="none" stroke="#8A5A3B" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+    <!-- blunt snout -->
+    <path d="M207 71 C219 71 228 80 228 95 L228 114 C228 129 218 140 204 140 L202 140 C196 140 193 134 193 126 L193 89 C193 79 198 71 207 71 Z" fill="#6B4430"/>
+    <!-- nostrils + mouth -->
+    <ellipse cx="218" cy="86" rx="3.2" ry="4.2" transform="rotate(-18 218 86)" fill="#3B2A20"/>
+    <path d="M205 121 q6 6 12 0" fill="none" stroke="#3B2A20" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <g id="capy-blush" class="capy-blush">
+    <ellipse cx="177" cy="99" rx="9.5" ry="5.5" fill="#F4A6A0" opacity="0.9"/>
+  </g>
+
+  <g id="capy-eyes-open" class="capy-eyes-open">
+    <circle cx="170" cy="74" r="5" fill="#3B2A20"/>
+    <circle cx="171.8" cy="72.2" r="1.6" fill="#FFFFFF"/>
+  </g>
+
+  <g id="capy-eyes-side" class="capy-eyes-side">
+    <path d="M161 64 L179 66" fill="none" stroke="#3B2A20" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M161 73 L180 73" fill="none" stroke="#3B2A20" stroke-width="3" stroke-linecap="round"/>
+    <path d="M161.5 73 A4.8 4.8 0 0 0 171.1 73 Z" fill="#3B2A20"/>
+  </g>
+
+  <g id="capy-eyes-happy" class="capy-eyes-happy">
+    <path d="M162.5 76 Q170 66.5 177.5 76" fill="none" stroke="#3B2A20" stroke-width="3.4" stroke-linecap="round"/>
+  </g>
+
+  <g id="capy-yuzu" class="capy-yuzu">
+    <circle cx="176" cy="30" r="16" fill="#F7B32B"/>
+    <path d="M161.5 35 A16 16 0 0 0 190.5 35 A20 20 0 0 1 161.5 35 Z" fill="#E39A17"/>
+    <ellipse cx="170" cy="24" rx="5" ry="3.4" transform="rotate(-30 170 24)" fill="#FCD683"/>
+    <circle cx="183" cy="31" r="1" fill="#E39A17"/>
+    <circle cx="178" cy="38" r="1" fill="#E39A17"/>
+    <circle cx="168" cy="34" r="1" fill="#E39A17"/>
+    <path d="M176 15 L175 10" stroke="#5A8F3E" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M176 13 C182 3 194 3 199 8 C193 15 183 17 176 13 Z" fill="#6BAA4B"/>
+    <path d="M178 12 C185 9 191 8 196 8.5" fill="none" stroke="#5A8F3E" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

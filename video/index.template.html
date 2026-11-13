@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1920, height=1080" />
+<title>CapyWorks demo video</title>
+<script src="./vendor/gsap.min.js"></script>
+<script src="./data.js"></script>
+<style>
+  @font-face { font-family: "Nunito"; font-weight: 400; src: url("./fonts/nunito-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Nunito"; font-weight: 700; src: url("./fonts/nunito-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Nunito"; font-weight: 800; src: url("./fonts/nunito-latin-800-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Nunito"; font-weight: 900; src: url("./fonts/nunito-latin-900-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 400; src: url("./fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "JetBrains Mono"; font-weight: 600; src: url("./fonts/jetbrains-mono-latin-600-normal.woff2") format("woff2"); }
+
+  :root {
+    --cream: #FFF7EC; --card: #FFFDF9; --panel: #FCEBD5; --line: #EBD3B8;
+    --ink: #3B2A20; --brown: #6B4430; --fur: #B07B53; --fur-dark: #8A5A3B;
+    --yuzu: #F7B32B; --yuzu-soft: #FFE6B0; --leaf: #6BAA4B; --leaf-soft: #E3F1D9;
+    --blush: #F4A6A0; --slop: #C9483F; --slop-soft: #FBE3DF; --water: #8FD3E8; --water-soft: #DDF2F8;
+  }
+  body { margin: 0; }
+  #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--cream);
+          font-family: "Nunito", sans-serif; color: var(--ink); }
+  .clip { position: absolute; inset: 0; }
+  .scene { position: absolute; inset: 0; opacity: 0; visibility: hidden; }
+  .r { opacity: 0; visibility: hidden; }  /* revealed by the timeline */
+  .headline { position: absolute; left: 140px; top: 96px; margin: 0; font-size: 76px; font-weight: 900; letter-spacing: -1px; }
+  .headline.center { left: 0; right: 0; text-align: center; }
+  code, .mono { font-family: "JetBrains Mono", monospace; }
+
+  /* mascot poses — the timeline drives these, so no CSS animation in the video */
+  svg.capy { display: block; width: 100%; height: auto; overflow: visible; }
+  svg.capy.vcapy .capy-eyes-side, svg.capy.vcapy .capy-eyes-happy, svg.capy.vcapy .capy-yuzu { display: inline; opacity: 0; animation: none; }
+  svg.capy.vcapy.v-reject .capy-eyes-open { opacity: 0; }
+  svg.capy.vcapy.v-reject .capy-eyes-side { opacity: 1; }
+  svg.capy.vcapy.v-merge .capy-eyes-open { opacity: 0; }
+  svg.capy.vcapy.v-merge .capy-eyes-happy, svg.capy.vcapy.v-merge .capy-yuzu { opacity: 1; }
+
+  /* 1 · title */
+  .glow { position: absolute; border-radius: 50%; }
+  #glow-a { left: 120px; top: 170px; width: 860px; height: 860px; background: radial-gradient(circle, rgba(247,179,43,.22), rgba(247,179,43,0) 68%); }
+  #glow-b { left: 1180px; top: -160px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(107,170,75,.14), rgba(107,170,75,0) 68%); }
+  #title-capy { position: absolute; left: 150px; top: 260px; width: 800px; }
+  #title-text { position: absolute; left: 1000px; top: 352px; }
+  #title-word { margin: 0; font-size: 176px; font-weight: 900; letter-spacing: -3px; line-height: 1; }
+  #title-sub { margin: 18px 0 0 8px; font-size: 60px; font-weight: 800; color: var(--brown); }
+  #title-tag { display: inline-block; margin: 34px 0 0 6px; padding: 12px 26px; border-radius: 999px; background: var(--yuzu-soft);
+               color: var(--brown); font-size: 34px; font-weight: 800; }
+
+  /* 2 · problem */
+  #pb-slop { color: var(--slop); }
+  .slop-grid { position: absolute; left: 140px; top: 270px; width: 1340px; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .slop-card { background: var(--card); border: 3px solid var(--line); border-radius: 30px; padding: 32px 36px; height: 196px; box-sizing: border-box; }
+  .slop-label { font-size: 36px; font-weight: 900; color: var(--slop); margin-bottom: 18px; }
+  .slop-card code { display: block; font-size: 28px; color: var(--ink); text-decoration: underline wavy var(--slop) 2px; text-underline-offset: 9px; white-space: pre; }
+  #problem-capy { position: absolute; left: 1510px; top: 560px; width: 340px; }
+
+  /* 3 · how it works */
+  .sys { position: absolute; top: 236px; width: 790px; height: 640px; box-sizing: border-box; border-radius: 40px; padding: 40px 46px; background: var(--card); border: 3px solid var(--line); }
+  #sys2 { left: 130px; }
+  #sys1 { left: 1000px; }
+  .sys-badge { display: inline-block; padding: 10px 24px; border-radius: 999px; font-size: 30px; font-weight: 900; }
+  #sys2 .sys-badge { background: #E4EEF8; color: #3E6E9E; }
+  #sys1 .sys-badge { background: var(--yuzu-soft); color: var(--brown); }
+  .sys-title { margin: 22px 0 0; font-size: 46px; font-weight: 900; }
+  .model-chip { display: inline-block; margin-top: 16px; padding: 8px 20px; border-radius: 14px; background: var(--panel); font-size: 26px; color: var(--brown); }
+  #sys2-art { position: absolute; left: 150px; top: 300px; width: 470px; }
+  #sys2-art .capy-wrap { position: absolute; left: 0; top: 70px; width: 470px; }
+  #bird { position: absolute; left: 92px; top: 0; width: 132px; }
+  .q { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 18px; margin-top: 26px; }
+  .q:first-of-type { margin-top: 34px; }
+  .q-type { justify-self: start; padding: 8px 16px; border-radius: 12px; background: #EFE3D3; font-size: 24px; font-weight: 800; color: var(--brown); }
+  .q-text { font-size: 30px; font-weight: 800; }
+  .q-ans { grid-column: 2; display: flex; gap: 12px; align-items: center; margin-top: 10px; font-size: 26px; font-weight: 800; }
+  .bar { width: 380px; height: 22px; border-radius: 999px; background: #F1E4D4; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; background: var(--slop); transform-origin: 0 50%; transform: scaleX(0); border-radius: 999px; }
+  .opt { padding: 6px 16px; border-radius: 999px; background: #F1E4D4; color: var(--fur-dark); }
+  .opt.on { background: var(--yuzu); color: var(--ink); }
+
+  /* 4 · factory floor */
+  .stations { position: absolute; left: 130px; top: 84px; display: flex; align-items: center; }
+  .station { width: 230px; height: 92px; box-sizing: border-box; border-radius: 26px; background: var(--card); border: 3px solid var(--line);
+             display: grid; place-items: center; font-size: 34px; font-weight: 900; color: var(--fur-dark); }
+  .arrow { width: 56px; text-align: center; font-size: 36px; font-weight: 900; color: var(--line); }
+  .station .lit { position: absolute; inset: -3px; border-radius: 26px; background: var(--yuzu); display: grid; place-items: center; color: var(--ink); }
+  .station { position: relative; }
+  #st-onsen .lit { background: var(--water); }
+  #floor-ticket { position: absolute; left: 0; top: 200px; width: 300px; padding: 14px 18px; box-sizing: border-box; border-radius: 18px;
+                  background: var(--ink); color: var(--cream); font-size: 24px; font-weight: 800; text-align: center; }
+  .shot { position: absolute; border-radius: 24px; overflow: hidden; background: var(--card); box-shadow: 0 30px 70px rgba(59,42,32,.18), 0 0 0 3px var(--line); }
+  .shot-bar { height: 40px; background: var(--panel); display: flex; align-items: center; gap: 10px; padding: 0 18px; font-size: 20px; font-weight: 800; color: var(--fur-dark); }
+  .shot-bar i { width: 13px; height: 13px; border-radius: 50%; background: #E2C6A6; }
+  .shot-bar span { margin-left: 12px; }
+  .shot-body { position: relative; overflow: hidden; }
+  .shot-body img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  #floor-shot { left: 340px; top: 290px; width: 1120px; }
+  #floor-shot .shot-body { height: 630px; }
+  .tags { position: absolute; left: 1500px; top: 420px; display: flex; flex-direction: column; gap: 22px; }
+  .tag { padding: 14px 28px; border-radius: 999px; background: var(--leaf-soft); color: #3F7A2C; font-size: 34px; font-weight: 900; }
+
+  /* 5 · the slop catch */
+  #catch-shot { left: 100px; top: 200px; width: 900px; }
+  #catch-shot .shot-body { height: 506px; }
+  #catch-shot .shot-body img { position: absolute; inset: 0; }
+  #catch-panel { position: absolute; left: 1060px; top: 200px; width: 760px; }
+  #tests-chip { display: inline-block; margin-bottom: 22px; padding: 12px 22px; border-radius: 16px; background: var(--leaf-soft); color: #3F7A2C; font-size: 28px; font-weight: 900; }
+  #fails { position: relative; }
+  .panel-title { font-size: 30px; font-weight: 900; color: var(--fur-dark); margin-bottom: 18px; }
+  .fail { display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 12px; margin-bottom: 12px; padding: 13px 20px;
+          border-radius: 20px; background: var(--slop-soft); color: var(--slop); font-size: 27px; font-weight: 800; }
+  .fail .x { font-size: 30px; font-weight: 900; }
+  .fail .fd { font-family: "JetBrains Mono", monospace; font-size: 24px; }
+  #all-pass { position: absolute; left: 0; top: 84px; width: 760px; box-sizing: border-box; padding: 20px 24px; border-radius: 20px; background: var(--leaf-soft);
+              color: #3F7A2C; font-size: 32px; font-weight: 900; }
+  #catch-capy { position: absolute; left: 30px; top: 596px; width: 350px; }
+  #catch-stamp { position: absolute; left: 740px; top: 156px; padding: 14px 30px; border-radius: 18px; border: 5px solid var(--leaf); color: #3F7A2C;
+                 background: rgba(255,253,249,.94); font-size: 40px; font-weight: 900; transform: rotate(-7deg); }
+
+  /* 6 · stats */
+  .stat-grid { position: absolute; left: 140px; top: 300px; width: 1640px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
+  .stat { background: var(--card); border: 3px solid var(--line); border-radius: 36px; padding: 40px 34px; height: 300px; box-sizing: border-box; }
+  .stat .num { font-size: 104px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+  .stat .num small { font-size: 44px; letter-spacing: 0; color: var(--brown); }
+  .stat .lbl { margin-top: 22px; font-size: 32px; font-weight: 800; color: var(--brown); }
+  .stat .sub { margin-top: 6px; font-size: 24px; font-weight: 700; color: var(--fur); }
+  #stat-slop .num { color: var(--slop); }
+  #stats-foot { position: absolute; left: 0; right: 0; top: 650px; text-align: center; font-size: 32px; font-weight: 800; color: var(--fur-dark); line-height: 1.6; }
+  #stats-foot b { color: var(--ink); }
+
+  /* 7 · close */
+  #close-capy { position: absolute; left: 230px; top: 250px; width: 680px; }
+  #close-text { position: absolute; left: 1000px; top: 300px; }
+  .close-line { font-size: 74px; font-weight: 900; line-height: 1.15; }
+  #close-2 { color: var(--brown); }
+  #close-logo { margin-top: 44px; font-size: 54px; font-weight: 900; color: var(--fur); }
+  #close-credits { margin-top: 16px; font-size: 26px; font-weight: 700; color: var(--fur-dark); }
+
+  /* captions */
+  #captions { position: absolute; left: 0; right: 0; bottom: 46px; height: 84px; z-index: 50; }
+  .cap { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); padding: 14px 32px; border-radius: 24px;
+         background: rgba(59,42,32,.9); color: var(--cream); font-size: 38px; font-weight: 800; white-space: nowrap; opacity: 0; visibility: hidden; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-duration="{{TOTAL}}" data-width="1920" data-height="1080">
+  <div id="stage" class="clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="1">
+
+    <section class="scene" id="scene-title">
+      <div class="glow" id="glow-a"></div><div class="glow" id="glow-b"></div>
+      <div id="title-capy" class="r">{{CAPY:capy-title}}</div>
+      <div id="title-text">
+        <h1 id="title-word" class="r">CapyWorks</h1>
+        <p id="title-sub" class="r">the chillest software factory</p>
+        <div id="title-tag" class="r">a software factory with a System 1</div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-problem">
+      <h2 class="headline"><span id="pb-fast" class="r">Coding agents are fast.</span> <span id="pb-slop" class="r">They also ship slop.</span></h2>
+      <div class="slop-grid">
+        <div class="slop-card r" id="slop-todo"><div class="slop-label">TODOs</div><code>// TODO: handle errors later</code></div>
+        <div class="slop-card r" id="slop-dead"><div class="slop-label">Dead code</div><code>function legacyTimer() {} // unused</code></div>
+        <div class="slop-card r" id="slop-test"><div class="slop-label">Tests that assert nothing</div><code>expect(true).toBe(true);</code></div>
+        <div class="slop-card r" id="slop-scope"><div class="slop-label">Changes nobody asked for</div><code>M billing.ts   M .eslintrc</code></div>
+      </div>
+      <div id="problem-capy" class="r">{{CAPY:capy-problem:v-reject}}</div>
+    </section>
+
+    <section class="scene" id="scene-how">
+      <h2 class="headline center r" id="how-title">Thinking, fast and slow.</h2>
+      <div class="sys r" id="sys2">
+        <span class="sys-badge">System 2 · slow</span>
+        <p class="sys-title">An LLM coding agent writes the change</p>
+        <span class="model-chip mono" id="sys2-model"></span>
+      </div>
+      <div id="sys2-art" class="r">
+        <div class="capy-wrap">{{CAPY:capy-how}}</div>
+        <svg id="bird" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="a coding-agent bird in a hard hat">
+          <path d="M22 56 L22 61 M38 56 L38 61" stroke="#E08A1E" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="30" cy="40" rx="21" ry="18" fill="#6FA8DC"/>
+          <ellipse cx="34" cy="45" rx="12.5" ry="10.5" fill="#EAF4FB"/>
+          <path d="M14 38 C10 47 18 54 26 49 C22 45 19 41 14 38 Z" fill="#4F8CC4"/>
+          <circle cx="40" cy="33" r="3" fill="#3B2A20"/><circle cx="41" cy="32" r="1" fill="#fff"/>
+          <path d="M49 35 L58 38.5 L49 42 Z" fill="#F39C12"/>
+          <path d="M16 27 A15 13 0 0 1 46 27 Z" fill="#F7B32B"/>
+          <rect x="12" y="25.5" width="38" height="5" rx="2.5" fill="#E39A17"/>
+        </svg>
+      </div>
+      <div class="sys r" id="sys1">
+        <span class="sys-badge">System 1 · fast</span>
+        <p class="sys-title">Capy makes every judgment call</p>
+        <span class="model-chip mono" id="sys1-model"></span>
+        <div class="q r" id="q1"><span class="q-type">yes / no</span><span class="q-text" id="q1-text">Leaves TODOs or placeholders?</span>
+          <div class="q-ans"><div class="bar"><i id="q1-bar"></i></div><span class="mono" id="q1-val"></span></div></div>
+        <div class="q r" id="q2"><span class="q-type">choice</span><span class="q-text" id="q2-text">Kind of work?</span>
+          <div class="q-ans"><span class="opt on mono" id="q2-val">feature</span></div></div>
+        <div class="q r" id="q3"><span class="q-type">score</span><span class="q-text" id="q3-text">Risk if shipped unreviewed?</span>
+          <div class="q-ans"><span class="opt on mono" id="q3-val">low</span></div></div>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-floor">
+      <div class="stations">
+        <div class="station" id="st-intake">Intake<span class="lit r">Intake</span></div><div class="arrow">→</div>
+        <div class="station" id="st-triage">Triage<span class="lit r">Triage</span></div><div class="arrow">→</div>
+        <div class="station" id="st-build">Build<span class="lit r">Build</span></div><div class="arrow">→</div>
+        <div class="station" id="st-tests">Tests<span class="lit r">Tests</span></div><div class="arrow">→</div>
+        <div class="station" id="st-gate">Capy Gate<span class="lit r">Capy Gate</span></div><div class="arrow">→</div>
+        <div class="station" id="st-onsen">Onsen<span class="lit r">Onsen</span></div>
+      </div>
+      <div id="floor-ticket" class="r"></div>
+      <div class="shot r" id="floor-shot">
+        <div class="shot-bar"><i></i><i></i><i></i><span>CapyWorks · factory floor</span></div>
+        <div class="shot-body"><img id="floor-img" src="./assets/screens/floor.png" alt="" /></div>
+      </div>
+      <div class="tags">
+        <span class="tag r" id="tag-prob">probability</span>
+        <span class="tag r" id="tag-lat">latency</span>
+        <span class="tag r" id="tag-cost">cost</span>
+      </div>
+    </section>
+
+    <section class="scene" id="scene-catch">
+      <h2 class="headline r" id="catch-title" style="top:84px;font-size:64px">Slop bounces. Clean code gets a yuzu.</h2>
+      <div class="shot r" id="catch-shot">
+        <div class="shot-bar"><i></i><i></i><i></i><span id="catch-bar-text">CapyWorks · Capy Gate</span></div>
+        <div class="shot-body"><img id="catch-reject" src="./assets/screens/reject.png" alt="" /><img id="catch-merged" class="r" src="./assets/screens/merged.png" alt="" /></div>
+      </div>
+      <div id="catch-panel">
+        <div id="tests-chip" class="r">✓ Tests passed</div>
+        <div id="fails" class="r"><div class="panel-title" id="fails-title">Capy Gate</div><div id="fails-list"></div></div>
+        <div id="all-pass" class="r">✓ Every check passed. Merged.</div>
+      </div>
+      <div id="catch-capy">{{CAPY:capy-catch}}</div>
+      <div id="catch-stamp" class="r">Capy-approved</div>
+    </section>
+
+    <section class="scene" id="scene-stats">
+      <h2 class="headline center r" id="stats-title">A real run from today</h2>
+      <div class="stat-grid">
+        <div class="stat r" id="stat-dec"><div class="num" id="n-dec">0</div><div class="lbl">decisions by Capy</div><div class="sub" id="n-dec-sub"></div></div>
+        <div class="stat r" id="stat-ms"><div class="num"><span id="n-ms">0</span><small> ms</small></div><div class="lbl">average Jev request</div><div class="sub" id="n-ms-sub"></div></div>
+        <div class="stat r" id="stat-cost"><div class="num" id="n-cost"></div><div class="lbl">total Jev cost</div><div class="sub" id="n-cost-sub"></div></div>
+        <div class="stat r" id="stat-slop"><div class="num" id="n-slop">0</div><div class="lbl">slop caught</div><div class="sub" id="n-slop-sub"></div></div>
+      </div>
+      <div id="stats-foot" class="r"></div>
+    </section>
+
+    <section class="scene" id="scene-close">
+      <div id="close-capy" class="r">{{CAPY:capy-close}}</div>
+      <div id="close-text">
+        <div class="close-line r" id="close-1">Agents do the work.</div>
+        <div class="close-line r" id="close-2">Capy makes the calls.</div>
+        <div id="close-logo" class="r">CapyWorks</div>
+        <div id="close-credits" class="r">TypeSafe Jev · W&amp;B Inference · HeyGen HyperFrames · ElevenLabs</div>
+      </div>
+    </section>
+
+    <div id="captions"></div>
+  </div>
+
+  {{AUDIO}}
+</div>
+
+<script>
+  const D = window.CAPY;
+  const run = D.run ?? {};
+  const totals = run.totals ?? {};
+  const models = run.models ?? {};
+  const highlight = run.highlight ?? {};
+  const failed = (highlight.failed ?? []).slice(0, 4);
+  const byId = (id) => document.getElementById(id);
+  const scene = Object.fromEntries(D.scenes.map((s) => [s.id, s]));
+  const cue = (sceneId, word, fallback = 0.6) => D.cues[sceneId]?.[word] ?? scene[sceneId].voStart + fallback;
+  const usd = (v) => (v >= 0.01 ? `$${v.toFixed(2)}` : v > 0 ? `$${Number(v.toPrecision(2))}` : "$0");
+  const firstProbability = Number.parseFloat(String(failed[0]?.display ?? "").replace(/[^0-9.]/g, ""));
+
+  // ---- fill text from the run data -------------------------------------------------------
+  byId("sys2-model").textContent = `${models.system2 ?? "LLM"} · W&B Inference`;
+  byId("sys1-model").textContent = `${models.system1 ?? "jev"} · TypeSafe`;
+  if (failed[0]) byId("q1-text").textContent = `${failed[0].label}?`;
+  byId("q1-val").textContent = Number.isFinite(firstProbability) ? firstProbability.toFixed(2) : "";
+  byId("floor-ticket").textContent = highlight.title ?? run.tickets?.[0]?.title ?? "New ticket";
+  byId("fails-title").textContent = `Bounced: ${highlight.title ?? "attempt 1"}`;
+  for (const [i, f] of failed.entries()) {
+    const row = document.createElement("div");
+    row.className = "fail r";
+    row.id = `fail-${i}`;
+    for (const [cls, text] of [["x", "✗"], ["fl", f.label], ["fd", f.display ?? ""]]) {
+      const span = document.createElement("span");
+      span.className = cls;
+      span.textContent = text;
+      row.appendChild(span);
+    }
+    byId("fails-list").appendChild(row);
+  }
+  byId("stats-title").textContent = D.source === "mock" ? "Sample run (placeholder data)" : "A real run from today";
+  byId("n-dec-sub").textContent = totals.jevRequests ? `in ${totals.jevRequests} Jev requests` : "";
+  byId("n-cost").textContent = usd(totals.jevCostUsd ?? 0);
+  byId("n-cost-sub").textContent = totals.decisions && totals.jevCostUsd ? `≈ ${usd(totals.jevCostUsd / totals.decisions)} per decision` : "";
+  byId("n-slop-sub").textContent = `${totals.merged ?? 0} merged · ${totals.bounced ?? 0} bounced`;
+  byId("stats-foot").textContent = `System 1: ${models.system1 ?? "jev"}   ·   System 2: ${models.system2 ?? "LLM"}`;
+
+  // ---- timeline ----------------------------------------------------------------------------
+  const tl = gsap.timeline({ paused: true });
+  const FADE = 0.35;
+  const show = (target, at, from = { y: 28 }, duration = 0.55, ease = "back.out(1.5)") =>
+    tl.fromTo(target, { autoAlpha: 0, ...from }, { autoAlpha: 1, x: 0, y: 0, scale: 1, duration, ease, immediateRender: false }, at);
+  const swap = (target, at, alpha) => tl.fromTo(target, { opacity: 1 - alpha }, { opacity: alpha, duration: 0.15, immediateRender: false }, at);
+
+  for (const s of D.scenes) {
+    const el = byId(`scene-${s.id}`);
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: FADE, ease: "power1.out", immediateRender: false }, s.start);
+    tl.fromTo(el, { autoAlpha: 1 }, { autoAlpha: 0, duration: FADE, ease: "power1.in", immediateRender: false }, s.start + s.duration - FADE);
+  }
+
+  // 1 · title
+  const t1 = scene.title.start;
+  show("#title-capy", t1 + 0.15, { y: 80 }, 0.9, "back.out(1.4)");
+  show("#title-word", t1 + 0.45, { y: 40 }, 0.7, "power3.out");
+  show("#title-sub", cue("title", "chillest", 1.6) - 0.3, { y: 24 }, 0.6, "power3.out");
+  show("#title-tag", cue("title", "factory", 2.2), { y: 16 }, 0.5);
+  tl.fromTo("#capy-title", { y: 0 }, { y: -10, duration: 1.1, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, t1 + 1.1);
+  tl.fromTo("#capy-title .capy-eyes-open", { scaleY: 1 }, { scaleY: 0.1, transformOrigin: "50% 50%", duration: 0.09, yoyo: true, repeat: 1, immediateRender: false }, t1 + 2.9);
+
+  // 2 · problem
+  const t2 = scene.problem.start;
+  show("#pb-fast", t2 + 0.2, { y: 24 }, 0.5, "power3.out");
+  show("#pb-slop", cue("problem", "but", 1.2), { y: 24 }, 0.5, "power3.out");
+  show("#slop-todo", cue("problem", "todos", 3.6), { y: 40, scale: 0.94 });
+  show("#slop-dead", cue("problem", "dead", 4.4), { y: 40, scale: 0.94 });
+  show("#slop-test", cue("problem", "tests", 5.2), { y: 40, scale: 0.94 });
+  show("#slop-scope", cue("problem", "changes", 6.4), { y: 40, scale: 0.94 });
+  show("#problem-capy", cue("problem", "slop", 2.4), { y: 60 }, 0.7);
+
+  // 3 · how it works
+  const t3 = scene.how.start;
+  show("#how-title", t3 + 0.2, { y: 24 }, 0.5, "power3.out");
+  show("#sys2", cue("how", "coding", 2.4) - 0.2, { y: 40 });
+  show("#sys2-art", cue("how", "coding", 2.4), { y: 40 });
+  tl.fromTo("#bird", { y: -140, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.8, ease: "bounce.out", immediateRender: false }, cue("how", "riding", 4.2) - 0.2);
+  show("#sys1", cue("how", "part", 6.4) - 0.3, { y: 40 });
+  show("#q1", cue("how", "typed", 11.5), { x: 30, y: 0 }, 0.45, "power3.out");
+  show("#q2", cue("how", "typed", 11.5) + 0.25, { x: 30, y: 0 }, 0.45, "power3.out");
+  show("#q3", cue("how", "typed", 11.5) + 0.5, { x: 30, y: 0 }, 0.45, "power3.out");
+  tl.fromTo("#q1-bar", { scaleX: 0 }, { scaleX: Number.isFinite(firstProbability) ? firstProbability : 0, duration: 0.8, ease: "power2.out", immediateRender: false },
+    cue("how", "probabilities", 13));
+
+  // 4 · factory floor
+  const t4 = scene.floor.start;
+  const stations = ["intake", "triage", "build", "tests", "gate", "onsen"];
+  const stationX = (i) => 130 + i * (230 + 56) + 115 - 150; // ticket card left edge under station i
+  const stationCues = [cue("floor", "intake", 2.2), cue("floor", "triage", 3), cue("floor", "build", 3.6), cue("floor", "tests", 4.2), cue("floor", "gate", 5.2)];
+  stationCues.push(stationCues[4] + 0.7);
+  tl.fromTo("#floor-ticket", { autoAlpha: 0, x: stationX(0), y: -10 }, { autoAlpha: 1, y: 0, duration: 0.4, immediateRender: false }, t4 + 0.4);
+  stations.forEach((id, i) => {
+    show(`#st-${id} .lit`, stationCues[i], { scale: 0.9 }, 0.35, "back.out(2)");
+    if (i > 0) tl.fromTo("#floor-ticket", { x: stationX(i - 1) }, { x: stationX(i), duration: 0.45, ease: "power2.inOut", immediateRender: false }, stationCues[i] - 0.2);
+  });
+  show("#floor-shot", cue("floor", "logged", 8), { y: 80 }, 0.8, "power3.out");
+  tl.fromTo("#floor-img", { scale: 1 }, { scale: 1.06, duration: scene.floor.duration - (cue("floor", "logged", 8) - t4), ease: "none", immediateRender: false }, cue("floor", "logged", 8));
+  show("#tag-prob", cue("floor", "probability", 9.4), { x: 30, y: 0 }, 0.4);
+  show("#tag-lat", cue("floor", "latency", 10.2), { x: 30, y: 0 }, 0.4);
+  show("#tag-cost", cue("floor", "cost", 11), { x: 30, y: 0 }, 0.4);
+
+  // 5 · the slop catch
+  const t5 = scene.catch.start;
+  show("#catch-title", t5 + 0.2, { y: 20 }, 0.5, "power3.out");
+  show("#catch-shot", t5 + 0.3, { y: 50 }, 0.7, "power3.out");
+  swap("#capy-catch .capy-eyes-open", cue("catch", "notice", 1.6), 0);
+  swap("#capy-catch .capy-eyes-side", cue("catch", "notice", 1.6), 1);
+  show("#fails", cue("catch", "bounces", 2.6) - 0.1, { y: 16 }, 0.4, "power3.out");
+  failed.forEach((_, i) => show(`#fail-${i}`, cue("catch", "exact", 3.6) + i * 0.3, { x: 40, y: 0 }, 0.45, "power3.out"));
+  const clean = cue("catch", "clean", 7.6);
+  tl.fromTo("#fails", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, clean - 0.2);
+  show("#all-pass", clean, { y: 16 }, 0.5);
+  tl.fromTo("#catch-merged", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, clean - 0.1);
+  swap("#capy-catch .capy-eyes-side", clean, 0);
+  swap("#capy-catch .capy-eyes-happy", clean, 1);
+  tl.fromTo("#capy-catch .capy-yuzu", { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 0.75, ease: "bounce.out", immediateRender: false }, cue("catch", "yuzu", 10) - 0.35);
+  show("#catch-stamp", cue("catch", "yuzu", 10), { scale: 1.6 }, 0.45, "back.out(2)");
+
+  // 6 · stats
+  const t6 = scene.stats.start;
+  show("#stats-title", t6 + 0.2, { y: 20 }, 0.5, "power3.out");
+  const countUp = (id, value, at) => tl.fromTo(byId(id), { innerText: 0 }, { innerText: value, snap: { innerText: 1 }, duration: 1.1, ease: "power2.out", immediateRender: false }, at);
+  show("#stat-dec", cue("stats", "every", 1.4), { y: 40 });
+  countUp("n-dec", totals.decisions ?? 0, cue("stats", "every", 1.4));
+  show("#stat-ms", cue("stats", "fast", 2.4), { y: 40 });
+  countUp("n-ms", Math.round(totals.jevMsAvg ?? 0), cue("stats", "fast", 2.4));
+  show("#stat-cost", cue("stats", "cost", 3.8) - 0.3, { y: 40 });
+  show("#stat-slop", cue("stats", "cost", 3.8) + 0.2, { y: 40 });
+  countUp("n-slop", totals.slopCaught ?? 0, cue("stats", "cost", 3.8) + 0.2);
+  show("#stats-foot", cue("stats", "cost", 3.8) + 0.6, { y: 12 }, 0.5, "power3.out");
+
+  // 7 · close
+  const t7 = scene.close.start;
+  show("#close-capy", t7 + 0.15, { y: 60 }, 0.8, "back.out(1.4)");
+  swap("#capy-close .capy-eyes-open", t7 + 0.9, 0);
+  swap("#capy-close .capy-eyes-happy", t7 + 0.9, 1);
+  tl.fromTo("#capy-close .capy-yuzu", { opacity: 0, y: -70 }, { opacity: 1, y: 0, duration: 0.75, ease: "bounce.out", immediateRender: false }, t7 + 0.6);
+  show("#close-1", cue("close", "agents", 0.2), { y: 24 }, 0.5, "power3.out");
+  show("#close-2", cue("close", "capy", 1.6), { y: 24 }, 0.5, "power3.out");
+  show("#close-logo", cue("close", "capyworks", 3), { y: 16 }, 0.5);
+  show("#close-credits", cue("close", "capyworks", 3) + 0.4, { y: 10 }, 0.5, "power3.out");
+
+  // captions
+  for (const [i, c] of D.captions.entries()) {
+    const el = document.createElement("div");
+    el.className = "cap";
+    el.id = `cap-${i}`;
+    el.textContent = c.text;
+    byId("captions").appendChild(el);
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.12, immediateRender: false }, c.start);
+    tl.fromTo(el, { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.12, immediateRender: false }, Math.max(c.start + 0.2, c.end - 0.12));
+  }
+
+  tl.set({}, {}, D.total); // pin the timeline length to the composition duration
+  window.__timelines = window.__timelines || {};
+  window.__timelines.main = tl;
+</script>
+</body>
+</html>
