@@ -41,10 +41,9 @@
   /* 1 · title */
   .glow { position: absolute; border-radius: 50%; }
   #glow-a { left: 120px; top: 170px; width: 860px; height: 860px; background: radial-gradient(circle, rgba(247,179,43,.22), rgba(247,179,43,0) 68%); }
-  #glow-b { left: 1180px; top: -160px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(107,170,75,.14), rgba(107,170,75,0) 68%); }
   #title-capy { position: absolute; left: 150px; top: 260px; width: 800px; }
-  #title-text { position: absolute; left: 1000px; top: 352px; }
-  #title-word { margin: 0; font-size: 176px; font-weight: 900; letter-spacing: -3px; line-height: 1; }
+  #title-text { position: absolute; left: 990px; top: 360px; }
+  #title-word { margin: 0; font-size: 150px; font-weight: 900; letter-spacing: -3px; line-height: 1; }
   #title-sub { margin: 18px 0 0 8px; font-size: 60px; font-weight: 800; color: var(--brown); }
   #title-tag { display: inline-block; margin: 34px 0 0 6px; padding: 12px 26px; border-radius: 999px; background: var(--yuzu-soft);
                color: var(--brown); font-size: 34px; font-weight: 800; }
@@ -58,23 +57,23 @@
   #problem-capy { position: absolute; left: 1510px; top: 560px; width: 340px; }
 
   /* 3 · how it works */
-  .sys { position: absolute; top: 236px; width: 790px; height: 640px; box-sizing: border-box; border-radius: 40px; padding: 40px 46px; background: var(--card); border: 3px solid var(--line); }
+  .sys { position: absolute; top: 226px; width: 790px; height: 690px; box-sizing: border-box; border-radius: 40px; padding: 40px 46px; background: var(--card); border: 3px solid var(--line); }
   #sys2 { left: 130px; }
   #sys1 { left: 1000px; }
   .sys-badge { display: inline-block; padding: 10px 24px; border-radius: 999px; font-size: 30px; font-weight: 900; }
   #sys2 .sys-badge { background: #E4EEF8; color: #3E6E9E; }
   #sys1 .sys-badge { background: var(--yuzu-soft); color: var(--brown); }
-  .sys-title { margin: 22px 0 0; font-size: 46px; font-weight: 900; }
+  .sys-title { margin: 20px 0 0; font-size: 42px; font-weight: 900; }
   .model-chip { display: inline-block; margin-top: 16px; padding: 8px 20px; border-radius: 14px; background: var(--panel); font-size: 26px; color: var(--brown); }
-  #sys2-art { position: absolute; left: 150px; top: 300px; width: 470px; }
-  #sys2-art .capy-wrap { position: absolute; left: 0; top: 70px; width: 470px; }
-  #bird { position: absolute; left: 92px; top: 0; width: 132px; }
+  #sys2-art { position: absolute; left: 325px; top: 480px; width: 400px; height: 420px; }
+  #sys2-art .capy-wrap { position: absolute; left: 0; top: 60px; width: 400px; }
+  #bird { position: absolute; left: 105px; top: 45px; width: 132px; z-index: 2; }
   .q { display: grid; grid-template-columns: 150px 1fr; align-items: center; gap: 18px; margin-top: 26px; }
   .q:first-of-type { margin-top: 34px; }
   .q-type { justify-self: start; padding: 8px 16px; border-radius: 12px; background: #EFE3D3; font-size: 24px; font-weight: 800; color: var(--brown); }
   .q-text { font-size: 30px; font-weight: 800; }
   .q-ans { grid-column: 2; display: flex; gap: 12px; align-items: center; margin-top: 10px; font-size: 26px; font-weight: 800; }
-  .bar { width: 380px; height: 22px; border-radius: 999px; background: #F1E4D4; overflow: hidden; }
+  .bar { width: 290px; height: 22px; border-radius: 999px; background: #F1E4D4; overflow: hidden; }
   .bar i { display: block; height: 100%; width: 100%; background: var(--slop); transform-origin: 0 50%; transform: scaleX(0); border-radius: 999px; }
   .opt { padding: 6px 16px; border-radius: 999px; background: #F1E4D4; color: var(--fur-dark); }
   .opt.on { background: var(--yuzu); color: var(--ink); }
@@ -115,18 +114,19 @@
   #all-pass { position: absolute; left: 0; top: 84px; width: 760px; box-sizing: border-box; padding: 20px 24px; border-radius: 20px; background: var(--leaf-soft);
               color: #3F7A2C; font-size: 32px; font-weight: 900; }
   #catch-capy { position: absolute; left: 30px; top: 596px; width: 350px; }
-  #catch-stamp { position: absolute; left: 740px; top: 156px; padding: 14px 30px; border-radius: 18px; border: 5px solid var(--leaf); color: #3F7A2C;
+  #catch-stamp { position: absolute; left: 730px; top: 236px; padding: 14px 30px; border-radius: 18px; border: 5px solid var(--leaf); color: #3F7A2C;
                  background: rgba(255,253,249,.94); font-size: 40px; font-weight: 900; transform: rotate(-7deg); }
 
   /* 6 · stats */
-  .stat-grid { position: absolute; left: 140px; top: 300px; width: 1640px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px; }
-  .stat { background: var(--card); border: 3px solid var(--line); border-radius: 36px; padding: 40px 34px; height: 300px; box-sizing: border-box; }
+  .stat-grid { position: absolute; left: 100px; top: 280px; width: 1720px; display: grid; grid-template-columns: 1fr 1fr 1.3fr 1fr; gap: 30px; }
+  .stat { background: var(--card); border: 3px solid var(--line); border-radius: 36px; padding: 38px 30px; height: 320px; box-sizing: border-box; min-width: 0; }
   .stat .num { font-size: 104px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
   .stat .num small { font-size: 44px; letter-spacing: 0; color: var(--brown); }
-  .stat .lbl { margin-top: 22px; font-size: 32px; font-weight: 800; color: var(--brown); }
-  .stat .sub { margin-top: 6px; font-size: 24px; font-weight: 700; color: var(--fur); }
+  .stat .lbl { margin-top: 22px; font-size: 29px; font-weight: 800; color: var(--brown); white-space: nowrap; }
+  .stat .sub { margin-top: 8px; font-size: 23px; font-weight: 700; color: var(--fur); white-space: nowrap; }
+  #n-cost { font-size: 88px; }
   #stat-slop .num { color: var(--slop); }
-  #stats-foot { position: absolute; left: 0; right: 0; top: 650px; text-align: center; font-size: 32px; font-weight: 800; color: var(--fur-dark); line-height: 1.6; }
+  #stats-foot { position: absolute; left: 0; right: 0; top: 660px; text-align: center; font-size: 32px; font-weight: 800; color: var(--fur-dark); line-height: 1.6; }
   #stats-foot b { color: var(--ink); }
 
   /* 7 · close */
@@ -148,7 +148,7 @@
   <div id="stage" class="clip" data-start="0" data-duration="{{TOTAL}}" data-track-index="1">
 
     <section class="scene" id="scene-title">
-      <div class="glow" id="glow-a"></div><div class="glow" id="glow-b"></div>
+      <div class="glow" id="glow-a"></div>
       <div id="title-capy" class="r">{{CAPY:capy-title}}</div>
       <div id="title-text">
         <h1 id="title-word" class="r">CapyWorks</h1>
@@ -172,7 +172,7 @@
       <h2 class="headline center r" id="how-title">Thinking, fast and slow.</h2>
       <div class="sys r" id="sys2">
         <span class="sys-badge">System 2 · slow</span>
-        <p class="sys-title">An LLM coding agent writes the change</p>
+        <p class="sys-title">An LLM agent writes the code</p>
         <span class="model-chip mono" id="sys2-model"></span>
       </div>
       <div id="sys2-art" class="r">
@@ -269,26 +269,39 @@
   const run = D.run ?? {};
   const totals = run.totals ?? {};
   const models = run.models ?? {};
-  const highlight = run.highlight ?? {};
-  const failed = (highlight.failed ?? []).slice(0, 4);
+  const story = D.story ?? {};
+  const bounced = story.bounced ?? { checks: (run.highlight?.failed ?? []).map((f) => ({ label: f.label, failP: null })) };
+  const checks = bounced.checks.slice(0, 5);
   const byId = (id) => document.getElementById(id);
   const scene = Object.fromEntries(D.scenes.map((s) => [s.id, s]));
   const cue = (sceneId, word, fallback = 0.6) => D.cues[sceneId]?.[word] ?? scene[sceneId].voStart + fallback;
   const usd = (v) => (v >= 0.01 ? `$${v.toFixed(2)}` : v > 0 ? `$${Number(v.toPrecision(2))}` : "$0");
-  const firstProbability = Number.parseFloat(String(failed[0]?.display ?? "").replace(/[^0-9.]/g, ""));
+  const seconds = (ms) => `${(ms / 1000).toFixed(1)} s`;
 
   // ---- fill text from the run data -------------------------------------------------------
   byId("sys2-model").textContent = `${models.system2 ?? "LLM"} · W&B Inference`;
   byId("sys1-model").textContent = `${models.system1 ?? "jev"} · TypeSafe`;
-  if (failed[0]) byId("q1-text").textContent = `${failed[0].label}?`;
-  byId("q1-val").textContent = Number.isFinite(firstProbability) ? firstProbability.toFixed(2) : "";
-  byId("floor-ticket").textContent = highlight.title ?? run.tickets?.[0]?.title ?? "New ticket";
-  byId("fails-title").textContent = `Bounced: ${highlight.title ?? "attempt 1"}`;
-  for (const [i, f] of failed.entries()) {
+  const placeholders = checks.find((c) => c.id === "placeholders");
+  const q1Value = typeof placeholders?.value === "number" ? placeholders.value : null;
+  byId("q1-val").textContent = q1Value === null ? "" : `P(yes) ${q1Value.toFixed(2)}`;
+  const triageOf = (type) => (story.triage ?? []).find((d) => d.type === type);
+  if (triageOf("choice")) {
+    byId("q2-text").textContent = `${triageOf("choice").label}?`;
+    byId("q2-val").textContent = triageOf("choice").display;
+  }
+  if (triageOf("score")) {
+    byId("q3-text").textContent = `${triageOf("score").label}?`;
+    byId("q3-val").textContent = triageOf("score").display;
+  }
+  byId("floor-ticket").textContent = story.ticketId ? `${story.ticketId} · ${story.title}` : (run.tickets?.[0]?.title ?? "New ticket");
+  byId("tests-chip").textContent = bounced.tests ? `✓ Tests: ${bounced.tests}` : "✓ Tests passed";
+  byId("fails-title").textContent = `Capy Gate · attempt ${bounced.attempt ?? 1}${bounced.latencyMs ? ` · ${bounced.latencyMs} ms` : ""}`;
+  for (const [i, check] of checks.entries()) {
     const row = document.createElement("div");
     row.className = "fail r";
     row.id = `fail-${i}`;
-    for (const [cls, text] of [["x", "✗"], ["fl", f.label], ["fd", f.display ?? ""]]) {
+    const cells = [["x", "✗"], ["fl", check.label], ["fd", typeof check.failP === "number" ? `P(fail) ${check.failP.toFixed(2)}` : ""]];
+    for (const [cls, text] of cells) {
       const span = document.createElement("span");
       span.className = cls;
       span.textContent = text;
@@ -296,12 +309,33 @@
     }
     byId("fails-list").appendChild(row);
   }
+  byId("all-pass").textContent = story.merged
+    ? `✓ Attempt ${story.merged.attempt}: all ${story.merged.checks} checks passed in ${story.merged.latencyMs} ms. Merged.`
+    : "✓ Every check passed. Merged.";
+  byId("catch-bar-text").textContent = story.ticketId ? `CapyWorks · ${story.ticketId} · ${story.title}` : "CapyWorks · Capy Gate";
   byId("stats-title").textContent = D.source === "mock" ? "Sample run (placeholder data)" : "A real run from today";
   byId("n-dec-sub").textContent = totals.jevRequests ? `in ${totals.jevRequests} Jev requests` : "";
+  const jevMsTotal = (totals.jevMsAvg ?? 0) * (totals.jevRequests ?? 0);
+  byId("n-ms-sub").textContent = jevMsTotal ? `≈ ${seconds(jevMsTotal)} in total` : "";
   byId("n-cost").textContent = usd(totals.jevCostUsd ?? 0);
   byId("n-cost-sub").textContent = totals.decisions && totals.jevCostUsd ? `≈ ${usd(totals.jevCostUsd / totals.decisions)} per decision` : "";
-  byId("n-slop-sub").textContent = `${totals.merged ?? 0} merged · ${totals.bounced ?? 0} bounced`;
-  byId("stats-foot").textContent = `System 1: ${models.system1 ?? "jev"}   ·   System 2: ${models.system2 ?? "LLM"}`;
+  byId("n-slop-sub").textContent = bounced.tests ? "its tests had passed" : "caught before merge";
+  const foot = byId("stats-foot");
+  const line1 = document.createElement("div");
+  const parts = [
+    ["System 2 ", models.system2 ?? "LLM", " spent ", seconds(totals.llmMsTotal ?? 0), " building   ·   "],
+    ["System 1 ", models.system1 ?? "jev", " spent ", `≈ ${seconds(jevMsTotal)}`, " judging"],
+  ];
+  for (const [a, b1, c, b2, d] of parts) {
+    const strong1 = document.createElement("b");
+    strong1.textContent = b1;
+    const strong2 = document.createElement("b");
+    strong2.textContent = b2;
+    line1.append(a, strong1, c, strong2, d);
+  }
+  const line2 = document.createElement("div");
+  line2.textContent = `${run.tickets?.length ?? 0} tickets · ${totals.merged ?? 0} merged · ${totals.bounced ?? 0} bounced · ${totals.escalated ?? 0} escalated`;
+  foot.append(line1, line2);
 
   // ---- timeline ----------------------------------------------------------------------------
   const tl = gsap.timeline({ paused: true });
@@ -345,7 +379,7 @@
   show("#q1", cue("how", "typed", 11.5), { x: 30, y: 0 }, 0.45, "power3.out");
   show("#q2", cue("how", "typed", 11.5) + 0.25, { x: 30, y: 0 }, 0.45, "power3.out");
   show("#q3", cue("how", "typed", 11.5) + 0.5, { x: 30, y: 0 }, 0.45, "power3.out");
-  tl.fromTo("#q1-bar", { scaleX: 0 }, { scaleX: Number.isFinite(firstProbability) ? firstProbability : 0, duration: 0.8, ease: "power2.out", immediateRender: false },
+  tl.fromTo("#q1-bar", { scaleX: 0 }, { scaleX: q1Value ?? 0, duration: 0.8, ease: "power2.out", immediateRender: false },
     cue("how", "probabilities", 13));
 
   // 4 · factory floor
@@ -371,10 +405,11 @@
   show("#catch-shot", t5 + 0.3, { y: 50 }, 0.7, "power3.out");
   swap("#capy-catch .capy-eyes-open", cue("catch", "notice", 1.6), 0);
   swap("#capy-catch .capy-eyes-side", cue("catch", "notice", 1.6), 1);
-  show("#fails", cue("catch", "bounces", 2.6) - 0.1, { y: 16 }, 0.4, "power3.out");
-  failed.forEach((_, i) => show(`#fail-${i}`, cue("catch", "exact", 3.6) + i * 0.3, { x: 40, y: 0 }, 0.45, "power3.out"));
-  const clean = cue("catch", "clean", 7.6);
-  tl.fromTo("#fails", { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, clean - 0.2);
+  show("#tests-chip", cue("catch", "tests", 2.4), { y: 16 }, 0.45);
+  show("#fails", cue("catch", "bounces", 4) - 0.1, { y: 16 }, 0.4, "power3.out");
+  checks.forEach((_, i) => show(`#fail-${i}`, cue("catch", "bounces", 4) + 0.2 + i * 0.22, { x: 40, y: 0 }, 0.4, "power3.out"));
+  const clean = cue("catch", "clean", 9.5);
+  tl.fromTo(["#fails", "#tests-chip"], { autoAlpha: 1 }, { autoAlpha: 0, duration: 0.3, immediateRender: false }, clean - 0.2);
   show("#all-pass", clean, { y: 16 }, 0.5);
   tl.fromTo("#catch-merged", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, clean - 0.1);
   swap("#capy-catch .capy-eyes-side", clean, 0);
@@ -385,7 +420,10 @@
   // 6 · stats
   const t6 = scene.stats.start;
   show("#stats-title", t6 + 0.2, { y: 20 }, 0.5, "power3.out");
-  const countUp = (id, value, at) => tl.fromTo(byId(id), { innerText: 0 }, { innerText: value, snap: { innerText: 1 }, duration: 1.1, ease: "power2.out", immediateRender: false }, at);
+  const countUp = (id, value, at) => {
+    byId(id).textContent = String(value);
+    if (value >= 10) tl.fromTo(byId(id), { innerText: 0 }, { innerText: value, snap: { innerText: 1 }, duration: 1.1, ease: "power2.out", immediateRender: false }, at);
+  };
   show("#stat-dec", cue("stats", "every", 1.4), { y: 40 });
   countUp("n-dec", totals.decisions ?? 0, cue("stats", "every", 1.4));
   show("#stat-ms", cue("stats", "fast", 2.4), { y: 40 });

@@ -26,8 +26,8 @@
         <dt>Jev decisions</dt>
         <dd id="stat-decisions">0</dd>
       </div>
-      <div class="stat">
-        <dt>Avg Jev latency</dt>
+      <div class="stat" title="Average time per Jev call">
+        <dt>Jev latency</dt>
         <dd><span id="stat-latency">–</span><small>ms</small></dd>
       </div>
       <div class="stat">
@@ -73,28 +73,28 @@
             <span class="station__icon" data-icon="intake"></span>
             <div><h2>Intake</h2><p>Specific enough to build?</p></div>
           </header>
-          <div class="station__slot" data-slot="intake"></div>
+          <div class="station__slot" data-slot="intake" data-empty="Inbox zero"></div>
         </div>
         <div class="station" data-stage="triage">
           <header class="station__head">
             <span class="station__icon" data-icon="triage"></span>
             <div><h2>Triage</h2><p>What kind, how risky?</p></div>
           </header>
-          <div class="station__slot" data-slot="triage"></div>
+          <div class="station__slot" data-slot="triage" data-empty="Nothing to sort"></div>
         </div>
         <div class="station station--build" data-stage="build">
           <header class="station__head">
             <span class="station__icon station__icon--wide" data-icon="build"></span>
             <div><h2>Build</h2><p>Agents ride on Capy</p></div>
           </header>
-          <div class="station__slot" data-slot="build"></div>
+          <div class="station__slot" data-slot="build" data-empty="Agents napping"></div>
         </div>
         <div class="station" data-stage="tests">
           <header class="station__head">
             <span class="station__icon" data-icon="tests"></span>
             <div><h2>Tests</h2><p>Hard gate: must pass</p></div>
           </header>
-          <div class="station__slot" data-slot="tests"></div>
+          <div class="station__slot" data-slot="tests" data-empty="Quiet lab"></div>
         </div>
         <div class="station station--gate" data-stage="gate">
           <header class="station__head">
@@ -106,15 +106,15 @@
             <div class="gate-capy" id="gate-capy" aria-hidden="true"></div>
             <span class="yuzu-drop" id="yuzu-drop" aria-hidden="true"></span>
           </div>
-          <div class="station__slot" data-slot="gate"></div>
+          <div class="station__slot" data-slot="gate" data-empty=""></div>
         </div>
         <div class="station station--onsen" data-stage="onsen">
           <header class="station__head">
             <span class="station__icon" data-icon="onsen"></span>
             <div><h2>Onsen</h2><p>Merged. Soaking.</p></div>
           </header>
-          <div class="steam" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="station__slot" data-slot="onsen"></div>
+          <div class="steam" aria-hidden="true"><svg viewBox="0 0 44 26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 24c-3-3.5 3-6 0-10s3-6 0-10"/><path d="M22 24c-3-3.5 3-6 0-10s3-6 0-10"/><path d="M36 24c-3-3.5 3-6 0-10s3-6 0-10"/></svg></div>
+          <div class="station__slot" data-slot="onsen" data-empty="The water is warm"></div>
         </div>
       </div>
 

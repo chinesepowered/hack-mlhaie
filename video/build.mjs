@@ -4,7 +4,7 @@
 //   ../runs/demo.json          real factory run (falls back to data/mock-run.json)
 //   narration.json + audio/    ElevenLabs narration clips and their character timings
 //   ../assets/capy.svg         the mascot, inlined so each scene can pose it
-//   index.template.html        the composition, with {{PLACEHOLDERS}}
+//   index.html.tmpl            the composition, with {{PLACEHOLDERS}}
 // Outputs
 //   index.html                 the composition HyperFrames renders
 //   data.js                    run data, scene timings, word cues and captions
@@ -155,7 +155,7 @@ const audio = timeline.scenes
   .map((s) => `<audio id="vo-${s.id}" src="./audio/${s.id}.mp3" data-start="${s.voStart}" data-duration="${s.voSeconds}" data-track-index="9"></audio>`)
   .join("\n  ");
 
-let html = readFileSync(path.join(here, "index.template.html"), "utf8")
+let html = readFileSync(path.join(here, "index.html.tmpl"), "utf8")
   .replaceAll("{{TOTAL}}", String(timeline.total))
   .replace("{{AUDIO}}", audio);
 html = html.replace(/\{\{CAPY:([a-z-]+)(?::([a-z- ]+))?\}\}/g, (_, id, cls) => capy(id, cls ?? ""));

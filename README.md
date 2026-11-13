@@ -13,7 +13,9 @@ CapyWorks is a software factory built on *Thinking, Fast and Slow*:
 
 Because each decision costs a fraction of a cent and returns faster than a page load, Capy can judge **every** ticket and **every** attempt, not a sample of them.
 
-![The CapyWorks factory floor](docs/dashboard.png)
+![Capy rejecting a sloppy patch that passed its tests](docs/dashboard.png)
+
+**[Watch the 80-second demo video](video/out/capyworks-demo.mp4)**, made with [HyperFrames](https://github.com/heygen-com/hyperframes) and narrated by Capy (an ElevenLabs voice). Every number in it comes from the recorded shift.
 
 ## The line
 
@@ -63,6 +65,8 @@ The sloppy CAPY-2 patch, as Capy saw it:
 | Do the tests assert the new behavior? | 0.01 | fail |
 
 The rewrite scored 0.03, 0.03, 0.04, 0.11 and 0.86 on the same questions and merged.
+
+![The finished shift: 3 merged, 1 bounced, 30 decisions for $0.00029](docs/shift-complete.png)
 
 ## Run it
 

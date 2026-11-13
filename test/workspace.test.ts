@@ -26,6 +26,8 @@ test('a workspace clone can be edited, diffed and tested', async () => {
   const diff = await diffDirs(main, attempt);
   assert.match(diff, /^\+\+\+ b\/src\/hello\.ts$/m);
   assert.match(diff, /^\+export const hello = 'capy';$/m);
+  assert.match(diff, /^diff --git a\/src\/hello\.ts b\/src\/hello\.ts$/m);
+  assert.doesNotMatch(diff, /(main|attempt)\//);
   assert.deepEqual(
     (await readSources(attempt)).map((file) => file.path),
     ['src/hello.ts', 'src/onsen.ts', 'test/onsen.test.ts'],

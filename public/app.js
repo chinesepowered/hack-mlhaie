@@ -164,13 +164,19 @@
     log: onLog,
   };
 
-  let lastEventAt = 0;
+  let lastEventDone = -Infinity;
   function handle(evt) {
     if (!evt || typeof evt.type !== 'string') return;
     // Events that arrive back-to-back (SSE backlog on connect, mock "at=" jumps) skip the travel animation.
-    const now = performance.now();
-    state.instant = now - lastEventAt < 4;
-    lastEventAt = now;
+    state.instant = performance.now() - lastEventDone < 10;
+    try {
+      dispatch(evt);
+    } finally {
+      lastEventDone = performance.now();
+    }
+  }
+
+  function dispatch(evt) {
     if (typeof evt.t === 'number') {
       state.lastT = evt.t;
       ui.statusClock.textContent = `T+${(evt.t / 1000).toFixed(1)}s`;
@@ -199,10 +205,10 @@
     t.queued = false;
     if (e.attempt) t.attempt = e.attempt;
     t.stage = e.stage;
-    if (e.stage === 'build') { t.tests = null; t.gate = null; } // a fresh attempt starts clean
+    if (e.stage === 'build') { t.tests = null; t.gate = null; t.agent = null; } // a fresh attempt starts clean
+    renderCard(t);
     const slot = e.stage === 'bounced' || e.stage === 'escalated' ? 'upstream' : e.stage;
     if (slot === 'upstream' || FLOOR_SLOTS.includes(slot)) moveCard(t, slot);
-    renderCard(t);
     markBusy();
     follow(t.id, false);
   }
@@ -266,6 +272,7 @@
     t.reason = e.reason || '';
     t.queued = false;
     if (e.attempts) t.attempt = e.attempts;
+    renderCard(t);
     const s = state.stats;
     if (e.outcome === 'merged') {
       s.merged += 1;
@@ -338,9 +345,14 @@
     const top = h('div', { class: 'ticket__top' },
       h('span', { class: 'ticket__id', text: t.id }),
       t.attempt > 1 ? h('span', { class: 'ticket__attempt', text: `try ${t.attempt}` }) : null,
+      t.outcome === 'merged' ? h('span', { class: 'ticket__yuzu', title: 'Capy-approved' }, svg(ICONS.yuzu)) : null,
+      t.outcome === 'bounced' ? tag('fail', 'bounced', ICONS.back) : null,
+      t.outcome === 'escalated' ? tag('info', 'needs a human') : null,
       t.agent ? agentChip(t.agent, 'ticket__agent') : null);
 
     const meta = h('div', { class: 'ticket__meta' });
+    const working = workingLabel(t);
+    if (working) meta.append(h('span', { class: 'tag tag--info tag--working', text: working }));
     if (t.tests) meta.append(t.tests.passed ? tag('pass', 'tests pass', ICONS.check) : tag('fail', 'tests fail', ICONS.x));
     if (t.gate && t.gate.total) {
       meta.append(t.gate.failed
@@ -348,8 +360,6 @@
         : tag('pass', `${t.gate.total}/${t.gate.total} checks`, ICONS.check));
     }
     if (t.outcome === 'merged') meta.append(tag('yuzu', 'Capy-approved', ICONS.yuzu));
-    else if (t.outcome === 'bounced') meta.append(tag('fail', 'bounced', ICONS.back));
-    else if (t.outcome === 'escalated') meta.append(tag('info', 'needs a human'));
 
     const parts = [top, h('p', { class: 'ticket__title', text: t.title })];
     if (meta.childElementCount) parts.push(meta);
@@ -364,6 +374,15 @@
     cl.toggle('is-bounced', t.outcome === 'bounced');
     cl.toggle('is-escalated', t.outcome === 'escalated');
     cl.toggle('is-selected', state.selected === t.id);
+  }
+
+  // What a ticket is waiting on right now, shown as a gently pulsing tag.
+  function workingLabel(t) {
+    if (t.outcome || t.queued) return null;
+    if (t.stage === 'build' && !(t.agentOut && (t.agentOut.attempt || 1) === t.attempt)) return 'agent writing…';
+    if (t.stage === 'tests' && !t.tests) return 'running tests…';
+    if (t.stage === 'gate' && !t.gate) return 'Capy is judging…';
+    return null;
   }
 
   // Move a card to another slot. A fixed-position ghost travels across the floor so you can follow it.

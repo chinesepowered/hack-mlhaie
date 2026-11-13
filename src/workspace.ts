@@ -67,7 +67,8 @@ export async function diffDirs(before: string, after: string): Promise<string> {
   } catch (error) {
     const { code, stdout } = error as { code?: number; stdout?: string };
     if (code !== 1 || stdout === undefined) throw error;
-    return stdout.replaceAll(`a/${from}/`, 'a/').replaceAll(`b/${to}/`, 'b/');
+    const folders = [from, to].flatMap((dir) => [`a/${dir}/`, `b/${dir}/`]);
+    return folders.reduce((text, prefix) => text.replaceAll(prefix, prefix.slice(0, 2)), stdout);
   }
 }
 
