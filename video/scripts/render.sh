@@ -10,8 +10,8 @@ if [[ -x "$headless_shell" ]]; then
   export HYPERFRAMES_BROWSER_PATH="$headless_shell" PRODUCER_LOW_MEMORY_MODE=false
 fi
 
-[[ -d node_modules ]] || npm install --no-audit --no-fund
+[[ -d node_modules ]] || pnpm install --frozen-lockfile
 node build.mjs
-npx hyperframes lint
-npx hyperframes render --output out/capyworks-demo.mp4 --quiet
+pnpm exec hyperframes lint
+pnpm exec hyperframes render --output out/capyworks-demo.mp4 --quiet
 ffprobe -v error -show_entries format=duration,size -of compact out/capyworks-demo.mp4

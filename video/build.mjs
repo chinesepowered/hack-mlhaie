@@ -9,7 +9,7 @@
 //   index.html                 the composition HyperFrames renders
 //   data.js                    run data, scene timings, word cues and captions
 //
-// Usage (from video/): node build.mjs && npx hyperframes render --output out/capyworks-demo.mp4
+// Usage (from video/): node build.mjs && pnpm exec hyperframes render --output out/capyworks-demo.mp4
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import path from "node:path";

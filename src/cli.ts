@@ -5,7 +5,7 @@ import { runShift } from './factory.ts';
 import { Shift, saveRecord, toRecord, type TimedEvent } from './ledger.ts';
 import { renderLedger } from './report.ts';
 
-// Usage: npm run shift -- [--sloppy] [--only CAPY-2] [--save-as demo]
+// Usage: pnpm shift [--sloppy] [--only CAPY-2] [--save-as demo]
 const args = process.argv.slice(2);
 const option = (name: string) => (args.includes(name) ? args[args.indexOf(name) + 1] : undefined);
 
