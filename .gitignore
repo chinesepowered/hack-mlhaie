@@ -11,3 +11,4 @@ video/node_modules/
 # shift recordings: keep only the demo shift used for replay and the video
 runs/*
 !runs/demo.json
+!runs/demo.md

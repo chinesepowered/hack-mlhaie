@@ -10,6 +10,7 @@
   "scripts": {
     "start": "tsx src/server.ts",
     "shift": "tsx src/cli.ts",
+    "ledger": "tsx src/ledger-cli.ts",
     "test": "node --import tsx --test \"test/*.test.ts\"",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm test"

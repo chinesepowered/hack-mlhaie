@@ -1,8 +1,9 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import type { Ticket } from './agents.ts';
 import { hasKeys } from './config.ts';
 import { runShift } from './factory.ts';
 import { Shift, saveRecord, toRecord, type TimedEvent } from './ledger.ts';
+import { renderLedger } from './report.ts';
 
 // Usage: npm run shift -- [--sloppy] [--only CAPY-2] [--save-as demo]
 const args = process.argv.slice(2);
@@ -24,7 +25,10 @@ await runShift(shift, { tickets, sloppy: args.includes('--sloppy'), targetDir: '
 const record = toRecord(shift);
 await saveRecord(record, `runs/${shift.id}.json`);
 const saveAs = option('--save-as');
-if (saveAs) await saveRecord(record, `runs/${saveAs}.json`);
+if (saveAs) {
+  await saveRecord(record, `runs/${saveAs}.json`);
+  await writeFile(`runs/${saveAs}.md`, renderLedger(record));
+}
 console.log(`\nSaved runs/${shift.id}.json${saveAs ? ` and runs/${saveAs}.json` : ''}`);
 
 function describe(event: TimedEvent): string {

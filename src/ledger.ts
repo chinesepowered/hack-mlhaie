@@ -126,13 +126,18 @@ export function toRecord(shift: Shift): ShiftRecord {
   const outcomes = new Map(
     shift.events.flatMap((e) => (e.type === 'ticket.outcome' ? [[e.ticketId, e] as const] : [])),
   );
+  const firstCall = shift.events.find((e) => e.type === 'jev.call');
   const firstRejection = shift.events.find(
     (e) => e.type === 'jev.call' && e.stage === 'gate' && e.decisions.some((d) => d.passed === false),
   );
   return {
     runId: shift.id,
     startedAt: shift.startedAt.toISOString(),
-    models: start?.type === 'run.start' ? start.models : { system1: '', system2: '' },
+    models: {
+      // Report the exact Jev version that answered, not the requested alias.
+      system1: firstCall?.type === 'jev.call' ? firstCall.model : start?.type === 'run.start' ? start.models.system1 : '',
+      system2: start?.type === 'run.start' ? start.models.system2 : '',
+    },
     tickets: tickets.map(({ id, title }) => ({
       id,
       title,

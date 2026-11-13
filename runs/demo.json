@@ -1,0 +1,809 @@
+{
+  "runId": "shift-2026-11-13T19-47-34-663Z",
+  "startedAt": "2026-11-13T19:47:34.664Z",
+  "models": {
+    "system1": "jev-1.14.0",
+    "system2": "Qwen/Qwen3.8-27B"
+  },
+  "tickets": [
+    {
+      "id": "CAPY-1",
+      "title": "Bug: isSoaking is still true at the end minute",
+      "outcome": "merged",
+      "attempts": 1
+    },
+    {
+      "id": "CAPY-2",
+      "title": "Add yuzuNeeded(guests)",
+      "outcome": "merged",
+      "attempts": 2
+    },
+    {
+      "id": "CAPY-3",
+      "title": "Make the onsen better",
+      "outcome": "bounced",
+      "attempts": 0
+    },
+    {
+      "id": "CAPY-4",
+      "title": "Add minutesLeft(booking, nowMinute)",
+      "outcome": "merged",
+      "attempts": 1
+    }
+  ],
+  "totals": {
+    "jevRequests": 11,
+    "decisions": 30,
+    "jevMsAvg": 136,
+    "jevInputTokens": 6866,
+    "jevCostUsd": 0.000288372,
+    "llmMsTotal": 45614,
+    "merged": 3,
+    "bounced": 1,
+    "escalated": 0,
+    "slopCaught": 1
+  },
+  "highlight": {
+    "ticketId": "CAPY-2",
+    "title": "Add yuzuNeeded(guests)",
+    "failed": [
+      {
+        "label": "No TODOs or placeholders",
+        "display": "P(yes) 0.98"
+      },
+      {
+        "label": "No debug logs or dead code",
+        "display": "P(yes) 0.99"
+      },
+      {
+        "label": "Precise types",
+        "display": "P(yes) 0.94"
+      },
+      {
+        "label": "Stays within the ticket",
+        "display": "P(yes) 0.81"
+      },
+      {
+        "label": "Tests assert the new behavior",
+        "display": "P(yes) 0.01"
+      }
+    ]
+  },
+  "events": [
+    {
+      "type": "run.start",
+      "runId": "shift-2026-11-13T19-47-34-663Z",
+      "mode": "live",
+      "models": {
+        "system1": "jev-latest",
+        "system2": "Qwen/Qwen3.8-27B"
+      },
+      "tickets": [
+        {
+          "id": "CAPY-1",
+          "title": "Bug: isSoaking is still true at the end minute",
+          "body": "isSoaking(booking, nowMinute) returns true when nowMinute equals soakEndsAt(booking). The end minute is exclusive, so isSoaking must return false at that exact minute and after it. Fix the comparison in src/onsen.ts and add a regression test in test/onsen.test.ts for the end minute."
+        },
+        {
+          "id": "CAPY-2",
+          "title": "Add yuzuNeeded(guests)",
+          "body": "Create src/yuzu.ts exporting yuzuNeeded(guests: number): number. Two capybaras share one yuzu, so return guests divided by 2, rounded up: 0 guests -> 0, 1 -> 1, 4 -> 2, 5 -> 3. Throw a RangeError when guests is negative or not an integer. Add tests in test/yuzu.test.ts for each of those cases."
+        },
+        {
+          "id": "CAPY-3",
+          "title": "Make the onsen better",
+          "body": "The onsen code could be nicer. Improve it."
+        },
+        {
+          "id": "CAPY-4",
+          "title": "Add minutesLeft(booking, nowMinute)",
+          "body": "Add minutesLeft(booking: Booking, nowMinute: number): number to src/onsen.ts. Before the soak starts it returns durationMinutes. While soaking it returns soakEndsAt(booking) - nowMinute. From the end minute onward it returns 0, never a negative number. Add tests in test/onsen.test.ts for before, during, exactly at the end minute, and after the end."
+        }
+      ],
+      "t": 5
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-1",
+      "stage": "intake",
+      "attempt": 0,
+      "t": 6
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-1",
+      "stage": "intake",
+      "attempt": 0,
+      "latencyMs": 318,
+      "inputTokens": 393,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "specific",
+          "label": "Specific enough to build",
+          "type": "noul",
+          "value": 0.82,
+          "display": "P(yes) 0.82",
+          "threshold": 0.5,
+          "passed": true
+        }
+      ],
+      "t": 325
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-1",
+      "stage": "triage",
+      "attempt": 0,
+      "t": 325
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-1",
+      "stage": "triage",
+      "attempt": 0,
+      "latencyMs": 76,
+      "inputTokens": 492,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "kind",
+          "label": "Kind of work",
+          "threshold": null,
+          "passed": null,
+          "type": "choice",
+          "value": "bug",
+          "display": "bug (1.00)"
+        },
+        {
+          "id": "risk",
+          "label": "Risk if shipped unreviewed",
+          "threshold": null,
+          "passed": null,
+          "type": "score",
+          "value": 0.62,
+          "display": "Medium (0.62)"
+        }
+      ],
+      "t": 401
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-1",
+      "stage": "build",
+      "attempt": 1,
+      "t": 401
+    },
+    {
+      "type": "agent.output",
+      "ticketId": "CAPY-1",
+      "attempt": 1,
+      "agent": "qwen",
+      "summary": "Make the soak end minute exclusive in isSoaking and add a regression test for the end minute and after.",
+      "files": [
+        "src/onsen.ts",
+        "test/onsen.test.ts"
+      ],
+      "diff": "diff --git a/src/onsen.ts b/src/onsen.ts\nindex 8a422a4..9303891 100644\n--- a/src/onsen.ts\n+++ b/src/onsen.ts\n@@ -12,5 +12,5 @@ export function soakEndsAt(booking: Booking): number {\n \n /** Whether the guest is in the water at `nowMinute`. */\n export function isSoaking(booking: Booking, nowMinute: number): boolean {\n-  return nowMinute >= booking.startMinute && nowMinute <= soakEndsAt(booking);\n+  return nowMinute >= booking.startMinute && nowMinute < soakEndsAt(booking);\n }\ndiff --git a/test/onsen.test.ts b/test/onsen.test.ts\nindex d5bf7ca..78c6057 100644\n--- a/test/onsen.test.ts\n+++ b/test/onsen.test.ts\n@@ -16,3 +16,8 @@ test('isSoaking is true from the start minute onward', () => {\n   assert.equal(isSoaking(booking, 30), true);\n   assert.equal(isSoaking(booking, 60), true);\n });\n+\n+test('isSoaking is false at and after the end minute', () => {\n+  assert.equal(isSoaking(booking, 75), false);\n+  assert.equal(isSoaking(booking, 76), false);\n+});\n",
+      "latencyMs": 8797,
+      "t": 9217
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-1",
+      "stage": "tests",
+      "attempt": 1,
+      "t": 9217
+    },
+    {
+      "type": "tests.result",
+      "ticketId": "CAPY-1",
+      "attempt": 1,
+      "passed": true,
+      "summary": "4 passed, 0 failed",
+      "output": "\u2714 soakEndsAt adds the duration to the start minute (0.99357ms)\n\u2714 isSoaking is false before the soak starts (0.279515ms)\n\u2714 isSoaking is true from the start minute onward (0.145008ms)\n\u2714 isSoaking is false at and after the end minute (0.123535ms)\n\u2139 tests 4\n\u2139 suites 0\n\u2139 pass 4\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 196.198547",
+      "t": 9464
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-1",
+      "stage": "gate",
+      "attempt": 1,
+      "t": 9464
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-1",
+      "stage": "gate",
+      "attempt": 1,
+      "latencyMs": 107,
+      "inputTokens": 827,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "placeholders",
+          "label": "No TODOs or placeholders",
+          "type": "noul",
+          "value": 0.03,
+          "display": "P(yes) 0.03",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "debris",
+          "label": "No debug logs or dead code",
+          "type": "noul",
+          "value": 0.02,
+          "display": "P(yes) 0.02",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "types",
+          "label": "Precise types",
+          "type": "noul",
+          "value": 0.03,
+          "display": "P(yes) 0.03",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "scope",
+          "label": "Stays within the ticket",
+          "type": "noul",
+          "value": 0.07,
+          "display": "P(yes) 0.07",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "tests",
+          "label": "Tests assert the new behavior",
+          "type": "noul",
+          "value": 0.88,
+          "display": "P(yes) 0.88",
+          "threshold": 0.5,
+          "passed": true
+        }
+      ],
+      "t": 9571
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-1",
+      "stage": "onsen",
+      "attempt": 1,
+      "t": 9578
+    },
+    {
+      "type": "ticket.outcome",
+      "ticketId": "CAPY-1",
+      "outcome": "merged",
+      "attempts": 1,
+      "reason": "Capy-approved",
+      "t": 9578
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "intake",
+      "attempt": 0,
+      "t": 9578
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-2",
+      "stage": "intake",
+      "attempt": 0,
+      "latencyMs": 196,
+      "inputTokens": 410,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "specific",
+          "label": "Specific enough to build",
+          "type": "noul",
+          "value": 0.93,
+          "display": "P(yes) 0.93",
+          "threshold": 0.5,
+          "passed": true
+        }
+      ],
+      "t": 9774
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "triage",
+      "attempt": 0,
+      "t": 9775
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-2",
+      "stage": "triage",
+      "attempt": 0,
+      "latencyMs": 111,
+      "inputTokens": 509,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "kind",
+          "label": "Kind of work",
+          "threshold": null,
+          "passed": null,
+          "type": "choice",
+          "value": "feature",
+          "display": "feature (1.00)"
+        },
+        {
+          "id": "risk",
+          "label": "Risk if shipped unreviewed",
+          "threshold": null,
+          "passed": null,
+          "type": "score",
+          "value": 0.12,
+          "display": "Low (0.12)"
+        }
+      ],
+      "t": 9885
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "build",
+      "attempt": 1,
+      "t": 9886
+    },
+    {
+      "type": "agent.output",
+      "ticketId": "CAPY-2",
+      "attempt": 1,
+      "agent": "sloppy",
+      "summary": "Added yuzuNeeded.",
+      "files": [
+        "src/yuzu.ts",
+        "test/yuzu.test.ts"
+      ],
+      "diff": "diff --git a/CAPY-2-1/src/yuzu.ts b/src/yuzu.ts\nnew file mode 100644\nindex 0000000..cd27028\n--- /dev/null\n+++ b/src/yuzu.ts\n@@ -0,0 +1,10 @@\n+// TODO: handle bad input later\n+export function yuzuNeeded(guests: any): any {\n+  console.log('yuzuNeeded called with', guests);\n+  // let yuzu = Math.floor(guests / 2);\n+  let yuzu = 0;\n+  for (let i = 0; i < guests; i += 2) {\n+    yuzu = yuzu + 1;\n+  }\n+  return yuzu;\n+}\ndiff --git a/CAPY-2-1/test/yuzu.test.ts b/test/yuzu.test.ts\nnew file mode 100644\nindex 0000000..f7d1370\n--- /dev/null\n+++ b/test/yuzu.test.ts\n@@ -0,0 +1,8 @@\n+import assert from 'node:assert/strict';\n+import { test } from 'node:test';\n+import { yuzuNeeded } from '../src/yuzu.ts';\n+\n+test('yuzuNeeded works', () => {\n+  yuzuNeeded(4);\n+  assert.ok(true);\n+});\n",
+      "latencyMs": 0,
+      "t": 9901
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "tests",
+      "attempt": 1,
+      "t": 9901
+    },
+    {
+      "type": "tests.result",
+      "ticketId": "CAPY-2",
+      "attempt": 1,
+      "passed": true,
+      "summary": "5 passed, 0 failed",
+      "output": "\u2714 soakEndsAt adds the duration to the start minute (1.031241ms)\n\u2714 isSoaking is false before the soak starts (0.150414ms)\n\u2714 isSoaking is true from the start minute onward (0.08834ms)\n\u2714 isSoaking is false at and after the end minute (0.118086ms)\nyuzuNeeded called with 4\n\u2714 yuzuNeeded works (1.479121ms)\n\u2139 tests 5\n\u2139 suites 0\n\u2139 pass 5\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 231.173954",
+      "t": 10180
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "gate",
+      "attempt": 1,
+      "t": 10180
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-2",
+      "stage": "gate",
+      "attempt": 1,
+      "latencyMs": 114,
+      "inputTokens": 827,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "placeholders",
+          "label": "No TODOs or placeholders",
+          "type": "noul",
+          "value": 0.98,
+          "display": "P(yes) 0.98",
+          "threshold": 0.5,
+          "passed": false
+        },
+        {
+          "id": "debris",
+          "label": "No debug logs or dead code",
+          "type": "noul",
+          "value": 0.99,
+          "display": "P(yes) 0.99",
+          "threshold": 0.5,
+          "passed": false
+        },
+        {
+          "id": "types",
+          "label": "Precise types",
+          "type": "noul",
+          "value": 0.94,
+          "display": "P(yes) 0.94",
+          "threshold": 0.5,
+          "passed": false
+        },
+        {
+          "id": "scope",
+          "label": "Stays within the ticket",
+          "type": "noul",
+          "value": 0.81,
+          "display": "P(yes) 0.81",
+          "threshold": 0.5,
+          "passed": false
+        },
+        {
+          "id": "tests",
+          "label": "Tests assert the new behavior",
+          "type": "noul",
+          "value": 0.01,
+          "display": "P(yes) 0.01",
+          "threshold": 0.5,
+          "passed": false
+        }
+      ],
+      "t": 10294
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "build",
+      "attempt": 2,
+      "t": 10294
+    },
+    {
+      "type": "agent.output",
+      "ticketId": "CAPY-2",
+      "attempt": 2,
+      "agent": "qwen",
+      "summary": "Add yuzuNeeded with integer validation and tests for the listed guest counts and invalid inputs.",
+      "files": [
+        "src/yuzu.ts",
+        "test/yuzu.test.ts"
+      ],
+      "diff": "diff --git a/CAPY-2-2/src/yuzu.ts b/src/yuzu.ts\nnew file mode 100644\nindex 0000000..2d6334a\n--- /dev/null\n+++ b/src/yuzu.ts\n@@ -0,0 +1,7 @@\n+/** The number of yuzu needed for `guests`, with two capybaras sharing one yuzu. */\n+export function yuzuNeeded(guests: number): number {\n+  if (!Number.isInteger(guests) || guests < 0) {\n+    throw new RangeError('guests must be a non-negative integer');\n+  }\n+  return Math.ceil(guests / 2);\n+}\ndiff --git a/CAPY-2-2/test/yuzu.test.ts b/test/yuzu.test.ts\nnew file mode 100644\nindex 0000000..f6e363c\n--- /dev/null\n+++ b/test/yuzu.test.ts\n@@ -0,0 +1,27 @@\n+import assert from 'node:assert/strict';\n+import { test } from 'node:test';\n+import { yuzuNeeded } from '../src/yuzu.ts';\n+\n+test('yuzuNeeded returns 0 for 0 guests', () => {\n+  assert.equal(yuzuNeeded(0), 0);\n+});\n+\n+test('yuzuNeeded returns 1 for 1 guest', () => {\n+  assert.equal(yuzuNeeded(1), 1);\n+});\n+\n+test('yuzuNeeded returns 2 for 4 guests', () => {\n+  assert.equal(yuzuNeeded(4), 2);\n+});\n+\n+test('yuzuNeeded returns 3 for 5 guests', () => {\n+  assert.equal(yuzuNeeded(5), 3);\n+});\n+\n+test('yuzuNeeded throws a RangeError for negative guests', () => {\n+  assert.throws(() => yuzuNeeded(-1), RangeError);\n+});\n+\n+test('yuzuNeeded throws a RangeError for non-integer guests', () => {\n+  assert.throws(() => yuzuNeeded(1.5), RangeError);\n+});\n",
+      "latencyMs": 24907,
+      "t": 35213
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "tests",
+      "attempt": 2,
+      "t": 35213
+    },
+    {
+      "type": "tests.result",
+      "ticketId": "CAPY-2",
+      "attempt": 2,
+      "passed": true,
+      "summary": "10 passed, 0 failed",
+      "output": "\u2714 soakEndsAt adds the duration to the start minute (1.070847ms)\n\u2714 isSoaking is false before the soak starts (0.148479ms)\n\u2714 isSoaking is true from the start minute onward (0.085711ms)\n\u2714 isSoaking is false at and after the end minute (0.125778ms)\n\u2714 yuzuNeeded returns 0 for 0 guests (1.091553ms)\n\u2714 yuzuNeeded returns 1 for 1 guest (0.174815ms)\n\u2714 yuzuNeeded returns 2 for 4 guests (0.13639ms)\n\u2714 yuzuNeeded returns 3 for 5 guests (0.113079ms)\n\u2714 yuzuNeeded throws a RangeError for negative guests (0.68751ms)\n\u2714 yuzuNeeded throws a RangeError for non-integer guests (0.138093ms)\n\u2139 tests 10\n\u2139 suites 0\n\u2139 pass 10\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 228.317226",
+      "t": 35480
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "gate",
+      "attempt": 2,
+      "t": 35481
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-2",
+      "stage": "gate",
+      "attempt": 2,
+      "latencyMs": 120,
+      "inputTokens": 1016,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "placeholders",
+          "label": "No TODOs or placeholders",
+          "type": "noul",
+          "value": 0.03,
+          "display": "P(yes) 0.03",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "debris",
+          "label": "No debug logs or dead code",
+          "type": "noul",
+          "value": 0.03,
+          "display": "P(yes) 0.03",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "types",
+          "label": "Precise types",
+          "type": "noul",
+          "value": 0.04,
+          "display": "P(yes) 0.04",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "scope",
+          "label": "Stays within the ticket",
+          "type": "noul",
+          "value": 0.11,
+          "display": "P(yes) 0.11",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "tests",
+          "label": "Tests assert the new behavior",
+          "type": "noul",
+          "value": 0.86,
+          "display": "P(yes) 0.86",
+          "threshold": 0.5,
+          "passed": true
+        }
+      ],
+      "t": 35600
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-2",
+      "stage": "onsen",
+      "attempt": 2,
+      "t": 35605
+    },
+    {
+      "type": "ticket.outcome",
+      "ticketId": "CAPY-2",
+      "outcome": "merged",
+      "attempts": 2,
+      "reason": "Capy-approved",
+      "t": 35605
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-3",
+      "stage": "intake",
+      "attempt": 0,
+      "t": 35605
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-3",
+      "stage": "intake",
+      "attempt": 0,
+      "latencyMs": 161,
+      "inputTokens": 324,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "specific",
+          "label": "Specific enough to build",
+          "type": "noul",
+          "value": 0.07,
+          "display": "P(yes) 0.07",
+          "threshold": 0.5,
+          "passed": false
+        }
+      ],
+      "t": 35767
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-3",
+      "stage": "bounced",
+      "attempt": 0,
+      "t": 35767
+    },
+    {
+      "type": "ticket.outcome",
+      "ticketId": "CAPY-3",
+      "outcome": "bounced",
+      "attempts": 0,
+      "reason": "Too vague to build: Capy asks for a clearer spec",
+      "t": 35767
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-4",
+      "stage": "intake",
+      "attempt": 0,
+      "t": 35767
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-4",
+      "stage": "intake",
+      "attempt": 0,
+      "latencyMs": 108,
+      "inputTokens": 414,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "specific",
+          "label": "Specific enough to build",
+          "type": "noul",
+          "value": 0.78,
+          "display": "P(yes) 0.78",
+          "threshold": 0.5,
+          "passed": true
+        }
+      ],
+      "t": 35875
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-4",
+      "stage": "triage",
+      "attempt": 0,
+      "t": 35876
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-4",
+      "stage": "triage",
+      "attempt": 0,
+      "latencyMs": 94,
+      "inputTokens": 513,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "kind",
+          "label": "Kind of work",
+          "threshold": null,
+          "passed": null,
+          "type": "choice",
+          "value": "feature",
+          "display": "feature (1.00)"
+        },
+        {
+          "id": "risk",
+          "label": "Risk if shipped unreviewed",
+          "threshold": null,
+          "passed": null,
+          "type": "score",
+          "value": 0.25,
+          "display": "Low (0.25)"
+        }
+      ],
+      "t": 35970
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-4",
+      "stage": "build",
+      "attempt": 1,
+      "t": 35970
+    },
+    {
+      "type": "agent.output",
+      "ticketId": "CAPY-4",
+      "attempt": 1,
+      "agent": "qwen",
+      "summary": "Add minutesLeft to src/onsen.ts and cover before, during, end, and after cases in test/onsen.test.ts.",
+      "files": [
+        "src/onsen.ts",
+        "test/onsen.test.ts"
+      ],
+      "diff": "diff --git a/src/onsen.ts b/src/onsen.ts\nindex 9303891..c34d6b9 100644\n--- a/src/onsen.ts\n+++ b/src/onsen.ts\n@@ -14,3 +14,11 @@ export function soakEndsAt(booking: Booking): number {\n export function isSoaking(booking: Booking, nowMinute: number): boolean {\n   return nowMinute >= booking.startMinute && nowMinute < soakEndsAt(booking);\n }\n+\n+/** Minutes of soak remaining at `nowMinute`, never negative. */\n+export function minutesLeft(booking: Booking, nowMinute: number): number {\n+  if (nowMinute < booking.startMinute) {\n+    return booking.durationMinutes;\n+  }\n+  return Math.max(0, soakEndsAt(booking) - nowMinute);\n+}\ndiff --git a/test/onsen.test.ts b/test/onsen.test.ts\nindex 78c6057..c01f00c 100644\n--- a/test/onsen.test.ts\n+++ b/test/onsen.test.ts\n@@ -1,6 +1,6 @@\n import assert from 'node:assert/strict';\n import { test } from 'node:test';\n-import { isSoaking, soakEndsAt, type Booking } from '../src/onsen.ts';\n+import { isSoaking, minutesLeft, soakEndsAt, type Booking } from '../src/onsen.ts';\n \n const booking: Booking = { guest: 'Capy', startMinute: 30, durationMinutes: 45 };\n \n@@ -21,3 +21,20 @@ test('isSoaking is false at and after the end minute', () => {\n   assert.equal(isSoaking(booking, 75), false);\n   assert.equal(isSoaking(booking, 76), false);\n });\n+\n+test('minutesLeft returns durationMinutes before the soak starts', () => {\n+  assert.equal(minutesLeft(booking, 29), 45);\n+});\n+\n+test('minutesLeft counts down while soaking', () => {\n+  assert.equal(minutesLeft(booking, 30), 45);\n+  assert.equal(minutesLeft(booking, 60), 15);\n+});\n+\n+test('minutesLeft returns 0 at the end minute', () => {\n+  assert.equal(minutesLeft(booking, 75), 0);\n+});\n+\n+test('minutesLeft returns 0 after the end', () => {\n+  assert.equal(minutesLeft(booking, 76), 0);\n+});\n",
+      "latencyMs": 11910,
+      "t": 47894
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-4",
+      "stage": "tests",
+      "attempt": 1,
+      "t": 47895
+    },
+    {
+      "type": "tests.result",
+      "ticketId": "CAPY-4",
+      "attempt": 1,
+      "passed": true,
+      "summary": "14 passed, 0 failed",
+      "output": "\u2714 soakEndsAt adds the duration to the start minute (0.894762ms)\n\u2714 isSoaking is false before the soak starts (0.125092ms)\n\u2714 isSoaking is true from the start minute onward (0.112365ms)\n\u2714 isSoaking is false at and after the end minute (0.086232ms)\n\u2714 minutesLeft returns durationMinutes before the soak starts (0.164824ms)\n\u2714 minutesLeft counts down while soaking (0.079251ms)\n\u2714 minutesLeft returns 0 at the end minute (0.128291ms)\n\u2714 minutesLeft returns 0 after the end (0.068407ms)\n\u2714 yuzuNeeded returns 0 for 0 guests (0.869398ms)\n\u2714 yuzuNeeded returns 1 for 1 guest (0.119575ms)\n\u2714 yuzuNeeded returns 2 for 4 guests (0.079222ms)\n\u2714 yuzuNeeded returns 3 for 5 guests (0.066606ms)\n\u2714 yuzuNeeded throws a RangeError for negative guests (0.518106ms)\n\u2714 yuzuNeeded throws a RangeError for non-integer guests (0.148407ms)\n\u2139 tests 14\n\u2139 suites 0\n\u2139 pass 14\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 245.252415",
+      "t": 48190
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-4",
+      "stage": "gate",
+      "attempt": 1,
+      "t": 48190
+    },
+    {
+      "type": "jev.call",
+      "ticketId": "CAPY-4",
+      "stage": "gate",
+      "attempt": 1,
+      "latencyMs": 89,
+      "inputTokens": 1141,
+      "model": "jev-1.14.0",
+      "decisions": [
+        {
+          "id": "placeholders",
+          "label": "No TODOs or placeholders",
+          "type": "noul",
+          "value": 0.03,
+          "display": "P(yes) 0.03",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "debris",
+          "label": "No debug logs or dead code",
+          "type": "noul",
+          "value": 0.02,
+          "display": "P(yes) 0.02",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "types",
+          "label": "Precise types",
+          "type": "noul",
+          "value": 0.03,
+          "display": "P(yes) 0.03",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "scope",
+          "label": "Stays within the ticket",
+          "type": "noul",
+          "value": 0.07,
+          "display": "P(yes) 0.07",
+          "threshold": 0.5,
+          "passed": true
+        },
+        {
+          "id": "tests",
+          "label": "Tests assert the new behavior",
+          "type": "noul",
+          "value": 0.95,
+          "display": "P(yes) 0.95",
+          "threshold": 0.5,
+          "passed": true
+        }
+      ],
+      "t": 48280
+    },
+    {
+      "type": "ticket.stage",
+      "ticketId": "CAPY-4",
+      "stage": "onsen",
+      "attempt": 1,
+      "t": 48286
+    },
+    {
+      "type": "ticket.outcome",
+      "ticketId": "CAPY-4",
+      "outcome": "merged",
+      "attempts": 1,
+      "reason": "Capy-approved",
+      "t": 48286
+    },
+    {
+      "type": "run.end",
+      "totals": {
+        "jevRequests": 11,
+        "decisions": 30,
+        "jevMsAvg": 136,
+        "jevInputTokens": 6866,
+        "jevCostUsd": 0.000288372,
+        "llmMsTotal": 45614,
+        "merged": 3,
+        "bounced": 1,
+        "escalated": 0,
+        "slopCaught": 1
+      },
+      "t": 48287
+    }
+  ]
+}
